@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Миша EDU">
+<meta name="theme-color" content="#6C5CE7">
+<link rel="manifest" href="manifest.json">
+<title>Миша EDU</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F0EEFF;
+  --card: #FFFFFF;
+  --text: #2D3047;
+  --text-light: #8B8BA7;
+  --purple: #6C5CE7;
+  --purple-light: #A29BFE;
+  --orange: #FD7B33;
+  --orange-bg: #FFF3EC;
+  --blue: #0984E3;
+  --blue-bg: #E8F4FD;
+  --green: #00B894;
+  --green-bg: #E6F9F3;
+  --violet: #A55EEA;
+  --violet-bg: #F3EEFE;
+  --pink: #E84393;
+  --pink-bg: #FDECF4;
+  --yellow: #FDCB6E;
+  --coral: #FF6B6B;
+  --radius: 20px;
+  --radius-sm: 14px;
+  --shadow: 0 4px 20px rgba(108,92,231,0.1);
+  --shadow-card: 0 2px 16px rgba(0,0,0,0.06);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+body {
+  font-family: 'Nunito', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+  padding-top: var(--safe-top);
+  padding-bottom: calc(80px + var(--safe-bottom));
+}
+
+/* ===== HEADER ===== */
+.header {
+  background: linear-gradient(135deg, #6C5CE7 0%, #A55EEA 50%, #E84393 100%);
+  padding: 48px 20px 20px;
+  border-radius: 0 0 28px 28px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 30px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.header .day-badge {
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.date-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.date-arrow {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.12s;
+}
+
+.date-arrow:active { transform: scale(0.85); }
+
+.date-display {
+  text-align: center;
+}
+
+.date-main {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.date-sub {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: 1px;
+}
+
+.today-chip {
+  display: none;
+  margin-top: 8px;
+  padding: 5px 16px;
+  border-radius: 20px;
+  background: white;
+  color: var(--purple);
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  z-index: 1;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.today-chip.visible { display: block; }
+
+/* ===== PROGRESS BAR ===== */
+.progress-section {
+  margin: -14px 20px 0;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+  position: relative;
+  z-index: 2;
+}
+
+.progress-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.progress-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.progress-pct {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--purple);
+}
+
+.progress-track {
+  height: 10px;
+  background: #F0EEFF;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6C5CE7, #E84393);
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}
+
+.progress-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+/* ===== STREAK ===== */
+.streak {
+  margin: 12px 20px 0;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #FDCB6E, #FD7B33);
+  border-radius: var(--radius);
+  color: white;
+  display: none;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 16px rgba(253,123,51,0.25);
+}
+
+.streak.visible { display: flex; }
+.streak-icon { font-size: 30px; }
+.streak-text { font-size: 15px; font-weight: 800; }
+
+/* ===== TASK CARDS ===== */
+.tasks {
+  padding: 14px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s, box-shadow 0.15s;
+  border-left: 5px solid transparent;
+}
+
+.task:active { transform: scale(0.98); }
+
+.task[data-skill="reading"] { border-left-color: var(--orange); }
+.task[data-skill="math"] { border-left-color: var(--blue); }
+.task[data-skill="independence"] { border-left-color: var(--green); }
+.task[data-skill="selfregulation"] { border-left-color: var(--violet); }
+.task[data-skill="emotional"] { border-left-color: var(--pink); }
+
+.task-emoji {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.task[data-skill="reading"] .task-emoji { background: var(--orange-bg); }
+.task[data-skill="math"] .task-emoji { background: var(--blue-bg); }
+.task[data-skill="independence"] .task-emoji { background: var(--green-bg); }
+.task[data-skill="selfregulation"] .task-emoji { background: var(--violet-bg); }
+.task[data-skill="emotional"] .task-emoji { background: var(--pink-bg); }
+
+.task-content { flex: 1; min-width: 0; }
+
+.task-label {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.task[data-skill="reading"] .task-label { color: var(--orange); }
+.task[data-skill="math"] .task-label { color: var(--blue); }
+.task[data-skill="independence"] .task-label { color: var(--green); }
+.task[data-skill="selfregulation"] .task-label { color: var(--violet); }
+.task[data-skill="emotional"] .task-label { color: var(--pink); }
+
+.task-desc {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  margin-top: 2px;
+}
+
+.task-toggle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid #DDD;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.task.done { opacity: 0.65; }
+.task.done .task-desc { text-decoration: line-through; text-decoration-color: rgba(0,0,0,0.15); }
+
+.task.done .task-toggle {
+  background: var(--green);
+  border-color: var(--green);
+  transform: scale(1.1);
+}
+
+.task.done .task-toggle::after {
+  content: '✓';
+  color: white;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+/* ===== MORE BUTTON ===== */
+.more-btn {
+  display: none;
+  margin-top: 6px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s;
+  color: white;
+}
+.more-btn:active { transform: scale(0.93); }
+.task.done .more-btn { display: inline-block; }
+.task[data-skill="reading"] .more-btn { background: var(--orange); }
+.task[data-skill="math"] .more-btn { background: var(--blue); }
+.task[data-skill="independence"] .more-btn { background: var(--green); }
+.task[data-skill="selfregulation"] .more-btn { background: var(--violet); }
+.task[data-skill="emotional"] .more-btn { background: var(--pink); }
+.task[data-skill="writing"] .more-btn { background: var(--coral); }
+
+/* ===== BONUS TASKS ===== */
+.bonus-list {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bonus-item {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-light);
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bonus-item::before {
+  content: '★';
+  font-size: 11px;
+}
+
+/* ===== WRITING SKILL ===== */
+.task[data-skill="writing"] { border-left-color: var(--coral); }
+.task[data-skill="writing"] .task-emoji { background: #FFEFEF; }
+.task[data-skill="writing"] .task-label { color: var(--coral); }
+
+/* ===== MOOD & NOTE ===== */
+.bottom-card {
+  margin: 12px 20px 20px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-card);
+}
+
+.mood-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mood-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.mood-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.mood-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  background: none;
+  font-size: 22px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mood-btn:active { transform: scale(0.8); }
+
+.mood-btn.sel {
+  border-color: var(--purple);
+  background: var(--bg);
+  transform: scale(1.15);
+}
+
+.note-area {
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #EEE;
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  background: #FAFAFE;
+  resize: none;
+  height: 42px;
+  color: var(--text);
+  transition: border-color 0.2s;
+}
+
+.note-area:focus { outline: none; border-color: var(--purple-light); }
+.note-area::placeholder { color: #C8C8D4; }
+
+/* ===== TAB BAR ===== */
+.tabs {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(80px + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding-top: 10px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+  z-index: 100;
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 20px;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s;
+}
+
+.tab:active { transform: scale(0.9); }
+
+.tab-ico {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.2s;
+}
+
+.tab.on .tab-ico {
+  background: var(--purple);
+  font-size: 16px;
+  box-shadow: 0 3px 10px rgba(108,92,231,0.3);
+}
+
+.tab-txt {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-light);
+  transition: color 0.2s;
+}
+
+.tab.on .tab-txt { color: var(--purple); }
+
+/* ===== SCREENS ===== */
+.scr { display: none; }
+.scr.on { display: block; animation: pop 0.25s ease; }
+
+@keyframes pop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ===== PROGRESS SCREEN ===== */
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 14px 20px;
+}
+
+.stat {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.stat-num {
+  font-size: 36px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.stat-lbl {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+
+.sec-card {
+  margin: 0 20px 14px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow-card);
+}
+
+.sec-card h3 {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+.sk-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.sk-row:last-child { margin-bottom: 0; }
+.sk-ico { font-size: 18px; width: 24px; text-align: center; }
+.sk-name { font-size: 13px; font-weight: 700; width: 100px; }
+
+.sk-track {
+  flex: 1;
+  height: 8px;
+  background: #F0EEFF;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.sk-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s;
+}
+
+.sk-pct {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-light);
+  width: 36px;
+  text-align: right;
+}
+
+/* ===== HEATMAP ===== */
+.heatmap {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.hm {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  background: #F0EEFF;
+}
+
+.hm.full { background: var(--green); }
+.hm.partial { background: var(--yellow); }
+.hm.future { background: #F8F7FE; }
+
+/* ===== SETTINGS ===== */
+.set-group {
+  margin: 0 20px 14px;
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.set-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+}
+
+.set-row + .set-row { border-top: 1px solid #F0EEFF; }
+
+.set-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.set-left .ico { font-size: 20px; }
+
+.ph-badge {
+  font-size: 13px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--purple);
+  margin-right: 8px;
+}
+
+.ph-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, var(--purple), var(--violet));
+  color: white;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 3px 8px rgba(108,92,231,0.3);
+}
+
+.ph-btn:disabled { background: #E8E8F0; color: #C0C0CC; box-shadow: none; }
+
+.act-btn {
+  width: 100%;
+  padding: 14px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 800;
+  font-family: 'Nunito', sans-serif;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.act-btn.accent { color: var(--purple); }
+.act-btn.danger { color: var(--coral); }
+
+.sec-header {
+  padding: 6px 20px 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== CONFETTI ===== */
+.confetti-box { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+
+.conf {
+  position: absolute;
+  border-radius: 3px;
+  animation: cfall 2.5s ease-out forwards;
+}
+
+@keyframes cfall {
+  0% { transform: translateY(-10px) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg) scale(0.5); opacity: 0; }
+}
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  top: calc(60px + var(--safe-top));
+  left: 50%;
+  transform: translateX(-50%) translateY(-140px);
+  background: white;
+  border-radius: 22px;
+  padding: 18px 28px;
+  text-align: center;
+  box-shadow: 0 10px 50px rgba(108,92,231,0.2);
+  z-index: 998;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-width: 280px;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast-emo { font-size: 40px; }
+.toast-t { font-size: 18px; font-weight: 900; margin-top: 4px; }
+.toast-s { font-size: 13px; color: var(--text-light); font-weight: 600; margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<!-- TODAY -->
+<div id="scr-today" class="scr on">
+  <div class="header">
+    <div class="header-top">
+      <h1>Миша EDU 🌟</h1>
+      <div class="day-badge" id="day-badge"></div>
+    </div>
+    <div class="date-row">
+      <button class="date-arrow" id="prev">‹</button>
+      <div class="date-display">
+        <div class="date-main" id="d-main"></div>
+        <div class="date-sub" id="d-sub"></div>
+      </div>
+      <button class="date-arrow" id="next">›</button>
+    </div>
+    <button class="today-chip" id="today-chip">← Сегодня</button>
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-top">
+      <span class="progress-title">До цели</span>
+      <span class="progress-pct" id="p-pct"></span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="p-fill"></div>
+    </div>
+    <div class="progress-bottom">
+      <span>30 марта</span>
+      <span id="p-left"></span>
+      <span>8 августа 🎯</span>
+    </div>
+  </div>
+
+  <div class="streak" id="streak">
+    <div class="streak-icon">🔥</div>
+    <div class="streak-text" id="streak-txt"></div>
+  </div>
+
+  <div class="tasks" id="tasks"></div>
+
+  <div class="bottom-card">
+    <div class="mood-row">
+      <span class="mood-title">Настроение Миши</span>
+      <div class="mood-btns" id="moods">
+        <button class="mood-btn" data-m="1">😐</button>
+        <button class="mood-btn" data-m="2">🙂</button>
+        <button class="mood-btn" data-m="3">😊</button>
+        <button class="mood-btn" data-m="4">😄</button>
+        <button class="mood-btn" data-m="5">🤩</button>
+      </div>
+    </div>
+    <textarea class="note-area" id="note" placeholder="Заметка на сегодня..." rows="1"></textarea>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div id="scr-progress" class="scr">
+  <div class="header">
+    <div class="header-top"><h1>Прогресс 📊</h1></div>
+  </div>
+
+  <div style="height:14px"></div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="s-balls">0</div><div class="stat-lbl">шарочек</div></div>
+    <div class="stat"><div class="stat-num" id="s-streak">0</div><div class="stat-lbl">дней подряд 🔥</div></div>
+    <div class="stat"><div class="stat-num" id="s-pct">0%</div><div class="stat-lbl">выполнено</div></div>
+    <div class="stat"><div class="stat-num" id="s-left">0</div><div class="stat-lbl">дней до цели</div></div>
+  </div>
+
+  <div class="sec-card">
+    <h3>По областям</h3>
+    <div id="sk-bars"></div>
+  </div>
+
+  <div class="sec-card">
+    <h3>Календарь</h3>
+    <div class="heatmap" id="heatmap"></div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div id="scr-settings" class="scr">
+  <div class="header">
+    <div class="header-top"><h1>Настройки ⚙️</h1></div>
+  </div>
+
+  <div style="height:14px"></div>
+
+  <div class="sec-header">Фазы развития</div>
+  <div class="set-group" id="phases"></div>
+
+  <div class="sec-header">Данные</div>
+  <div class="set-group">
+    <div class="set-row"><button class="act-btn accent" id="btn-exp">Экспорт данных</button></div>
+    <div class="set-row"><button class="act-btn accent" id="btn-imp">Импорт данных</button></div>
+    <input type="file" id="imp-file" accept=".json" style="display:none">
+  </div>
+
+  <div class="set-group">
+    <div class="set-row"><button class="act-btn danger" id="btn-rst">Сбросить все данные</button></div>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tabs">
+  <button class="tab on" data-t="today"><div class="tab-ico">📋</div><div class="tab-txt">Сегодня</div></button>
+  <button class="tab" data-t="progress"><div class="tab-ico">📊</div><div class="tab-txt">Прогресс</div></button>
+  <button class="tab" data-t="settings"><div class="tab-ico">⚙️</div><div class="tab-txt">Настройки</div></button>
+</div>
+
+<div class="confetti-box" id="cbox"></div>
+<div class="toast" id="toast">
+  <div class="toast-emo" id="t-emo">🎉</div>
+  <div class="toast-t" id="t-t"></div>
+  <div class="toast-s" id="t-s"></div>
+</div>
+
+<script>
+const SKILLS = {
+  reading: {
+    name:'Чтение', emoji:'📖', color:'#FD7B33',
+    phases: {
+      1:['Прочитай 2 предложения и расскажи, о чём','Прочитай 3 слова и составь предложение','Прочитай предложение и нарисуй','Найди повторяющееся слово в 2 фразах','Новое слово — придумай предложение','Подпись под картинкой — подходит?','3 предложения: о чём одним словом?','Слово по слогам, потом целиком — быстро!','Фраза — назови все гласные','Прочитай про животное — что делает?','Короткая загадка — отгадай!','3 слова — какое длиннее?','Предложение шёпотом, потом громко','2 предложения — где ошибка?'],
+      2:['Абзац (3-4 предложения): что случилось?','Мини-история — придумай название','4 предложения — кто главный герой?','Текст + 2 вопроса','История — нарисуй иллюстрацию','5 предложений — перескажи','Диалог по ролям','Абзац — найди все имена','Сказка — чему учит?','Текст — найди секретное слово','История — придумай продолжение','4 предложения — расставь по порядку'],
+      3:['Полстранички — перескажи главное','Рассказ + 3 вопроса','Найди в тексте ответ на вопрос','Какой персонаж понравился и почему?','Самое интересное предложение','Вслух с выражением','Придумай другую концовку','Описание — угадай, кто это','Рецепт — расскажи по шагам','Два текста — чем похожи?'],
+      4:['Выбери книгу — прочитай страницу сам','Рассказ — перескажи маме','Комикс по прочитанной сказке (3 картинки)','2 странички — 3 новых слова','Задай маме 2 вопроса по тексту','Глава из книжки перед сном','Выучи 2 строчки стихотворения','Перескажи историю плюшевому мишке','Найди 3 слова-описания','Рассказ: понравился или нет? Почему?']
+    }
+  },
+  math: {
+    name:'Математика', emoji:'🔢', color:'#0984E3',
+    phases: {
+      1:['Посчитай предметы на столе','Покажи на пальцах 7','Считай от 1 до 15 вслух','Разложи 10 предметов и посчитай','Где больше: 5 яблок или 3?','Обратный счёт от 10','Найди цифру 8 вокруг','Ложки = людям за столом','Посчитай шаги до комнаты','Два набора — где больше?','До 20 хлопая в ладоши','Соседи числа 6','Круглые предметы в комнате','Фигуры: круги, квадраты, треугольники'],
+      2:['5 камешков на 2 кучки — способы?','Состав 4: все пары','3+2=?','Состав 5: пуговицы всеми способами','7−2=? на предметах','2+3=? пальцы','Состав 3: нарисуй','Карточки 1-7 по порядку','4 рыбки+1=?','Два числа дают 6?','Углы: △ и □','8 или 5? На сколько?'],
+      3:['Состав 7: все способы','8−3=? предметы','Состав 8: все пары','6 птиц−2=?','Обратный от 15','3 примера +','3 примера −','4 красных+3 зелёных=?','Состав 6: все варианты','Сравни: 9и7, 3и5, 6и6'],
+      4:['Состав 9: все пары','Состав 10: все способы','В уме: 5+4','В уме: 10−3','6 бананов+4 яблока=?','Двойками: 2,4,6,8…','10−3 другу=?','Пара к 7 до 10','5 примеров ±','5 машинок, у друга на 2 больше — ?']
+    }
+  },
+  independence: {
+    name:'Самостоятельность', emoji:'💪', color:'#00B894',
+    phases: {
+      1:['Оденься полностью сам','Заправь кровать','Убери тарелку после еды','Почисти зубы сам','Пижаму на место','Обувь — надень и застегни','Разбери пакет из магазина','Собери рюкзак на прогулку','Выбери одежду на прогулку','Куртку на крючок','Игрушки по местам','Помой руки с мылом'],
+      2:['Накрой на стол','Рассортируй бельё','Полей цветок','Вытри стол губкой','Загрузи стиральную машину','Книги на полку','Подмети (совок+щётка)','Грязное в корзину','Продукты на места','Одежда по погоде (глянь в окно)'],
+      3:['Сделай бутерброд','Налей воды из кувшина','Нарежь банан или огурец','Разогрей в микроволновке (мама рядом)','Чистое в шкаф','Организуй стол для занятий','Помой фрукты','Собери сумку для секции','Приготовь всё на завтра','Помоги младшему'],
+      4:['Спланируй утро','Завтрак: хлопья+молоко','Сам реши, когда перерыв','Список покупок с мамой','С младшим 10 минут','Перекус для семьи','Порядок в ящике','Выбери книгу','Одежда на завтра','Расскажи план на день']
+    }
+  },
+  selfregulation: {
+    name:'Логика', emoji:'🧩', color:'#A55EEA',
+    phases: {
+      1:['Мемори — 6 пар','Лабиринт (простой)','3 действия подряд по инструкции','Замри по команде!','5 отличий на картинке','Пазл 20-30 деталей','Ряд: ○□○□—?','Подожди 1 минуту (песочные часы)','3 дела по порядку','Настолка с правилами','Сортировка по цвету','Повтори ритм: хлоп-хлоп-топ'],
+      2:['Мемори — 8 пар','Лабиринт (средний)','Лишний из четырёх','Задание на 3 минуты (таймер)','Доббль или Уно','Повтори 4 действия','4 картинки по порядку','Загадка на логику','Нарисуй как на картинке','Конструктор по схеме'],
+      3:['Мемори — 10 пар','Что нужно для картины? По шагам','Инструкция 4 шага без подсказки','Сложный лабиринт','Турбосчёт','Лишнее + почему','6 картинок по порядку','Жди очередь (не подсказывай!)','2 загадки подряд','План: что на прогулку?'],
+      4:['Мемори — 12 пар','Настолка 15+ минут','Мини-проект: что рисуем и чем','Танграм или кубик','Объясни правила игры','Квест из 5 заданий','2 способа решить задачку','Слушай историю 10 мин не перебивая','Список дел на вечер','Что изменилось? (5 предметов)']
+    }
+  },
+  emotional: {
+    name:'Эмоции', emoji:'💛', color:'#E84393',
+    phases: {
+      1:['Покажи настроение на карточке','3 вещи, которые радуют','Лицом: радость, грусть, удивление','Когда было весело сегодня?','Картинка — что чувствует?','Нарисуй настроение','Что расстраивает? Что успокаивает?','Обними маму — скажи за что любишь','2 эмоции за сегодня','От 1 до 5: насколько хорошо?','С кем нравится играть?','Как развеселить грустного друга?'],
+      2:['Герой книжки — что чувствует?','Было страшно — что помогло?','Потерял игрушку — что чувствуешь?','Зеркало эмоций с мамой','Что делать, когда злишься?','Карта настроения дня','Когда ты кому-то помог','Мама убираешь сам — что чувствует?','3 способа поднять настроение','За что благодарен?'],
+      3:['Два друга поссорились — помири','Комикс: грустит→решение→радость','Что делаешь, когда скучно?','Как понять что человеку плохо?','Про лучшего друга','Кто-то обижает — 2 способа','Театр: изобрази 5 чувств','Чем гордишься?','Добрый поступок на завтра','3 хороших момента за день'],
+      4:['Письмо другу','От лица персонажа — что чувствовал?','Друг расстроен — что скажешь?','Мама сказала нет — как поступить?','Линейка эмоций 1-10','Что узнал о себе за неделю?','Сказка: герой побеждает страх','Почему плачут не от грусти?','Какая суперсила?','Благодарность + план на завтра']
+    }
+  },
+  writing: {
+    name:'Письмо', emoji:'✏️', color:'#FF6B6B',
+    phases: {
+      1:['Напиши цифру 1 — 5 раз красиво','Напиши цифру 2 — целая строчка','Напиши цифру 3 — обведи и сам','Напиши цифру 4 — по точкам и сам','Напиши цифру 5 — строчка','Цифры 1-3 — по одной строчке','Цифры 4-5 — по одной строчке','Напиши свой возраст цифрой','Обведи цифры 1-5 по пунктиру','Напиши сколько пальцев на руке','Цифры 1-5 — без подсказки в ряд','Напиши номер дома или квартиры','Нарисуй 3 яблока и напиши «3»','Нарисуй 5 звёзд и напиши «5»'],
+      2:['Напиши цифру 6 — строчка','Напиши цифру 7 — обведи и сам','Напиши цифру 8 — строчка','Напиши цифру 9 — по точкам и сам','Напиши 0 и 10','Цифры 6-9 — по одной строчке','Все цифры 0-9 в ряд','Напиши сколько ложек на столе','Напиши возраст мамы','Реши 2+1= и запиши ответ','Реши 3+2= и запиши','Напиши цифры от 1 до 10 подряд'],
+      3:['Запиши пример: 3+4=7','Запиши пример: 5−2=3','Напиши числа 11, 12, 13','Запиши 3 примера на сложение','Запиши 3 примера на вычитание','Напиши числа от 10 до 20','Реши и запиши: 4+3=?','Реши и запиши: 8−5=?','Напиши таблицу: состав числа 5','Подпиши количество под картинками'],
+      4:['Реши и запиши 5 примеров','Запиши состав числа 7','Запиши состав числа 8','Запиши состав числа 10','Реши задачу и запиши ответ','Напиши числа от 1 до 20 без ошибок','Заполни пропуск: _+3=7','Заполни пропуск: 9−_=4','Напиши числовой ряд чётных','Напиши числовой ряд нечётных']
+    }
+  }
+};
+
+const SK = ['reading','math','writing','independence','selfregulation','emotional'];
+const S0 = '2026-03-30', G0 = '2026-08-08', KEY = 'misha-edu-data';
+
+function ld(){try{const r=localStorage.getItem(KEY);if(r){const d=JSON.parse(r);if(!d.phases.writing)d.phases.writing=1;return d;}}catch(e){}return{days:{},phases:{reading:1,math:1,writing:1,independence:1,selfregulation:1,emotional:1}};}
+function sv(d){localStorage.setItem(KEY,JSON.stringify(d));}
+let D=ld();
+
+function ds(d){return d.toISOString().split('T')[0];}
+function pd(s){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
+function fmt(s){const d=pd(s),mn=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'],wd=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];return `${wd[d.getDay()]}, ${d.getDate()} ${mn[d.getMonth()]}`;}
+function df(a,b){return Math.round((pd(b)-pd(a))/864e5);}
+function td(){return ds(new Date());}
+function h(s){let v=0;for(let i=0;i<s.length;i++){v=((v<<5)-v)+s.charCodeAt(i);v|=0;}return Math.abs(v);}
+function tf(d,k){const p=D.phases[k]||1,pool=SKILLS[k].phases[p];return pool[h(d+k)%pool.length];}
+function gd(d){if(!D.days[d]){const t={};SK.forEach(k=>t[k]={text:tf(d,k),done:false});D.days[d]={tasks:t,mood:0,note:''};sv(D);}return D.days[d];}
+
+let cur=td();
+
+function addBonus(date,k){
+  const dd=gd(date),task=dd.tasks[k];
+  if(!task.bonus)task.bonus=[];
+  const p=D.phases[k]||1,pool=SKILLS[k].phases[p];
+  const used=new Set([task.text,...task.bonus]);
+  const avail=pool.filter(t=>!used.has(t));
+  if(!avail.length){task.bonus.push(pool[Math.floor(Math.random()*pool.length)]+' (повтор)');}
+  else{task.bonus.push(avail[h(date+k+task.bonus.length)%avail.length]);}
+  sv(D);render();
+}
+
+function render(){
+  const t=td(),dd=gd(cur),tot=df(S0,G0),dn=Math.max(1,df(S0,cur)+1),left=Math.max(0,df(cur,G0));
+
+  document.getElementById('day-badge').textContent=`День ${dn}/${tot}`;
+  document.getElementById('d-main').textContent=fmt(cur);
+  document.getElementById('d-sub').textContent=cur===t?'Сегодня':'';
+  document.getElementById('today-chip').classList.toggle('visible',cur!==t);
+
+  const pct=Math.min(100,Math.round(dn/tot*100));
+  document.getElementById('p-pct').textContent=pct+'%';
+  document.getElementById('p-fill').style.width=pct+'%';
+  document.getElementById('p-left').textContent=left+' дн.';
+
+  const stk=calcStreak();
+  const se=document.getElementById('streak');
+  if(stk>=3){se.classList.add('visible');document.getElementById('streak-txt').textContent=`${stk} дней подряд! Огонь!`;}
+  else se.classList.remove('visible');
+
+  const tl=document.getElementById('tasks');tl.innerHTML='';
+  SK.forEach(k=>{
+    const sk=SKILLS[k],task=dd.tasks[k];
+    if(!task)return;
+    const el=document.createElement('div');
+    el.className='task'+(task.done?' done':'');el.dataset.skill=k;
+    const bonusHtml=(task.bonus||[]).map(b=>`<div class="bonus-item">${b}</div>`).join('');
+    el.innerHTML=`<div class="task-emoji">${sk.emoji}</div><div class="task-content"><div class="task-label">${sk.name}</div><div class="task-desc">${task.text}</div><button class="more-btn" data-k="${k}">+ Хочу ещё</button>${bonusHtml?`<div class="bonus-list">${bonusHtml}</div>`:''}</div><div class="task-toggle"></div>`;
+    el.querySelector('.task-toggle').addEventListener('click',(e)=>{e.stopPropagation();task.done=!task.done;sv(D);render();if(SK.every(x=>dd.tasks[x]?.done)){confetti();celebrate();}});
+    el.querySelector('.more-btn').addEventListener('click',(e)=>{e.stopPropagation();addBonus(cur,k);});
+    tl.appendChild(el);
+  });
+
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.toggle('sel',+b.dataset.m===dd.mood));
+  document.getElementById('note').value=dd.note||'';
+}
+
+function calcStreak(){let s=0,d=new Date();while(true){const x=ds(d),dd=D.days[x];if(!dd)break;const allDone=SK.every(k=>{const t=dd.tasks[k];return t?t.done:true;});if(!allDone)break;s++;d.setDate(d.getDate()-1);}return s;}
+
+function confetti(){const box=document.getElementById('cbox'),cl=['#6C5CE7','#E84393','#00B894','#FD7B33','#0984E3','#FDCB6E','#FF6B6B'];for(let i=0;i<60;i++){const c=document.createElement('div');c.className='conf';c.style.left=Math.random()*100+'%';c.style.background=cl[i%7];c.style.animationDelay=Math.random()*0.4+'s';c.style.animationDuration=(2+Math.random())+'s';c.style.width=(6+Math.random()*8)+'px';c.style.height=(6+Math.random()*8)+'px';box.appendChild(c);}setTimeout(()=>box.innerHTML='',3500);}
+
+function celebrate(){const s=calcStreak();let e='🎉',t='Миша, молодец!',sub='Всё выполнено!';if(s===7){e='🏆';t='Неделя!';sub='Серьёзно круто!';}else if(s===14){e='🌟';t='Две недели!';sub='Миша — звезда!';}else if(s===30){e='🚀';t='Месяц!';sub='Невероятно!';}document.getElementById('t-emo').textContent=e;document.getElementById('t-t').textContent=t;document.getElementById('t-s').textContent=sub;const el=document.getElementById('toast');el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500);}
+
+function renderProgress(){
+  let balls=0,total=0;const sb={};SK.forEach(k=>sb[k]={d:0,t:0});
+  Object.values(D.days).forEach(day=>{SK.forEach(k=>{if(day.tasks[k]){total++;sb[k].t++;if(day.tasks[k].done){balls++;sb[k].d++;const bn=day.tasks[k].bonus?.length||0;balls+=bn;sb[k].d+=bn;sb[k].t+=bn;total+=bn;}}});});
+  document.getElementById('s-balls').textContent=balls;
+  document.getElementById('s-streak').textContent=calcStreak();
+  document.getElementById('s-pct').textContent=total?Math.round(balls/total*100)+'%':'0%';
+  document.getElementById('s-left').textContent=Math.max(0,df(td(),G0));
+
+  const bc=document.getElementById('sk-bars');bc.innerHTML='';
+  SK.forEach(k=>{const sk=SKILLS[k],p=sb[k].t?Math.round(sb[k].d/sb[k].t*100):0;bc.innerHTML+=`<div class="sk-row"><span class="sk-ico">${sk.emoji}</span><span class="sk-name">${sk.name}</span><div class="sk-track"><div class="sk-fill" style="width:${p}%;background:${sk.color}"></div></div><span class="sk-pct">${p}%</span></div>`;});
+
+  const hm=document.getElementById('heatmap');hm.innerHTML='';
+  const start=pd(S0),end=pd(G0),now=new Date(),wd=start.getDay(),off=wd===0?6:wd-1,g=new Date(start);g.setDate(g.getDate()-off);const d=new Date(g);
+  while(d<=end){const x=ds(d),div=document.createElement('div');div.className='hm';if(d>now||d<start)div.classList.add('future');else{const dd=D.days[x];if(dd){const n=SK.filter(k=>dd.tasks[k]?.done).length;if(n===SK.length)div.classList.add('full');else if(n>0)div.classList.add('partial');}}hm.appendChild(div);d.setDate(d.getDate()+1);}
+}
+
+function renderSettings(){
+  const l=document.getElementById('phases');l.innerHTML='';
+  SK.forEach(k=>{const sk=SKILLS[k],ph=D.phases[k],mx=Object.keys(sk.phases).length,r=document.createElement('div');r.className='set-row';r.innerHTML=`<div class="set-left"><span class="ico">${sk.emoji}</span><span class="name">${sk.name}</span></div><div style="display:flex;align-items:center;gap:8px"><span class="ph-badge">Фаза ${ph}</span><button class="ph-btn" ${ph>=mx?'disabled':''}>↑</button></div>`;r.querySelector('.ph-btn').addEventListener('click',()=>{if(ph<mx&&confirm(`Фаза ${ph+1} в «${sk.name}»?`)){D.phases[k]=ph+1;sv(D);renderSettings();}});l.appendChild(r);});
+}
+
+document.getElementById('prev').addEventListener('click',()=>{const d=pd(cur);d.setDate(d.getDate()-1);cur=ds(d);render();});
+document.getElementById('next').addEventListener('click',()=>{const d=pd(cur);d.setDate(d.getDate()+1);cur=ds(d);render();});
+document.getElementById('today-chip').addEventListener('click',()=>{cur=td();render();});
+document.getElementById('moods').addEventListener('click',e=>{const b=e.target.closest('.mood-btn');if(!b)return;const dd=gd(cur),m=+b.dataset.m;dd.mood=dd.mood===m?0:m;sv(D);render();});
+document.getElementById('note').addEventListener('input',e=>{gd(cur).note=e.target.value;sv(D);});
+
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.scr').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');document.getElementById('scr-'+b.dataset.t).classList.add('on');
+  if(b.dataset.t==='progress')renderProgress();if(b.dataset.t==='settings')renderSettings();
+}));
+
+document.getElementById('btn-exp').addEventListener('click',()=>{const b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='misha-edu-'+td()+'.json';a.click();});
+document.getElementById('btn-imp').addEventListener('click',()=>document.getElementById('imp-file').click());
+document.getElementById('imp-file').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.days&&d.phases&&confirm('Заменить данные?')){D=d;sv(D);render();}}catch{alert('Ошибка');}};r.readAsText(f);e.target.value='';});
+document.getElementById('btn-rst').addEventListener('click',()=>{if(confirm('Сбросить ВСЕ?')&&confirm('Точно?')){localStorage.removeItem(KEY);D=ld();cur=td();render();}});
+
+render();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>

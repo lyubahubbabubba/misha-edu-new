@@ -1,0 +1,18 @@
+{
+  "name": "Миша EDU",
+  "short_name": "Миша EDU",
+  "description": "Ежедневный трекер развития для Миши",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F0EEFF",
+  "theme_color": "#6C5CE7",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%236C5CE7' rx='20' width='100' height='100'/><text x='50' y='68' text-anchor='middle' font-size='50'>🌟</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
