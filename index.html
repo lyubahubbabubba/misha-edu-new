@@ -1014,8 +1014,10 @@ function celebrate(){
   const ov=document.getElementById('fw-overlay');
   const el=document.getElementById('toast');
   ov.classList.add('show');
-  el.classList.add('show');
-  setTimeout(()=>{el.classList.remove('show');ov.classList.remove('show');},4500);
+  requestAnimationFrame(()=>{requestAnimationFrame(()=>{el.classList.add('show');});});
+  el.addEventListener('click',()=>{el.classList.remove('show');ov.classList.remove('show');},{once:true});
+  ov.addEventListener('click',()=>{el.classList.remove('show');ov.classList.remove('show');},{once:true});
+  setTimeout(()=>{el.classList.remove('show');ov.classList.remove('show');},8000);
 }
 
 function renderProgress(){
