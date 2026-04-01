@@ -601,9 +601,107 @@ body {
   text-decoration-color: rgba(0,0,0,0.15);
 }
 
-#read-en .read-item { border-left-color: var(--blue); }
-#read-en .read-num { color: var(--blue); background: var(--blue-bg); }
-#read-en .read-item.done .read-num { background: var(--green); color: white; }
+/* ===== ENGLISH NOTEBOOK STYLE ===== */
+.en-card {
+  margin: 0 20px 14px;
+  background: white;
+  border-radius: var(--radius);
+  padding: 0;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.en-card h3 {
+  background: #1a237e;
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 12px 18px;
+  margin: 0;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.en-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.en-item {
+  padding: 14px 16px;
+  background: repeating-linear-gradient(
+    transparent, transparent 31px, #c8e0f4 31px, #c8e0f4 32px
+  );
+  background-position: 0 10px;
+  border-bottom: 2px solid #1a237e;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s;
+  min-height: 70px;
+}
+
+.en-item:last-child { border-bottom: none; }
+
+.en-item.done {
+  background-color: #e8f5e9;
+}
+
+.en-item-num {
+  font-size: 32px;
+  font-weight: 900;
+  color: #2e7d32;
+  line-height: 1;
+  flex-shrink: 0;
+  min-width: 36px;
+}
+
+.en-item-text {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.4;
+  color: #1a237e;
+  flex: 1;
+}
+
+.en-item-text .sw { color: #d32f2f; } /* sight words: the, a, an */
+.en-item-text .sw2 { color: #7b1fa2; } /* prepositions: in, on, to, with */
+.en-item-text .sw3 { color: #0277bd; text-decoration: underline; text-decoration-color: #0277bd; } /* digraphs: th, sh, ch */
+
+.en-item-emoji {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.en-item.done .en-item-text { text-decoration: line-through; text-decoration-color: rgba(0,0,0,0.2); }
+.en-item.done .en-item-num { color: var(--green); }
+
+.en-check {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid #DDD;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+  transition: all 0.25s;
+}
+
+.en-item.done .en-check {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.en-item.done .en-check::after {
+  content: '✓';
+  color: white;
+  font-size: 15px;
+  font-weight: 900;
+}
 
 /* ===== MOOD & NOTE ===== */
 .bottom-card {
@@ -1099,9 +1197,9 @@ body {
     <div class="read-list" id="read-ru"></div>
   </div>
 
-  <div class="sec-card">
-    <h3>🇬🇧 Read aloud</h3>
-    <div class="read-list" id="read-en"></div>
+  <div class="en-card">
+    <h3>🇬🇧 Read each sentence aloud!</h3>
+    <div class="en-list" id="read-en"></div>
   </div>
 
   <button class="math-refresh" id="read-new" style="margin-top:0">Новые предложения</button>
@@ -1386,40 +1484,96 @@ const SENTENCES_RU = [
 ];
 
 const SENTENCES_EN = [
-  'Masha loves to play ball.','The cat sleeps on the sofa.','Birds sing in spring.','The sun shines brightly.','Trees grow in the park.',
-  'Mom is cooking a tasty soup.','The dog runs on the road.','Fish swim in the pond.','The bear eats sweet honey.','Snow falls in winter.',
-  'Dad reads a book.','Children play outside.','A butterfly sits on a flower.','The moon shines at night.','The frog jumped into water.',
-  'A girl draws a house.','A boy rides a bike.','The hedgehog carries mushrooms.','The squirrel eats nuts.','Rain taps on the roof.',
-  'The bunny hid in the bushes.','The rooster crows each morning.','A fish lives in the river.','Wind blows from the sea.','Flowers smell sweet.',
-  'A cow gives milk.','The fox lives in the forest.','Bees make honey.','Snowflakes fall from the sky.','A rainbow after the rain.',
-  'The ball rolled far away.','A kitten plays with yarn.','The sun rises each morning.','Mom sings a song.','The car goes fast.',
-  'A plane flies high.','Snow melts in spring.','A mushroom grows under a tree.','The puppy wags its tail.','Stars glow in the sky.'
+  {t:'Put a pen in the bag.',e:'🎒'},
+  {t:'Hit it with a bat.',e:'🏏'},
+  {t:'The tea cup is on the desk.',e:'☕'},
+  {t:'The cat sits on the mat.',e:'🐱'},
+  {t:'A big dog runs in the park.',e:'🐕'},
+  {t:'The sun is hot in the sky.',e:'☀️'},
+  {t:'I can see a red bus.',e:'🚌'},
+  {t:'The fish is in the pond.',e:'🐟'},
+  {t:'She has a hat on.',e:'👒'},
+  {t:'He sat on a log.',e:'🪵'},
+  {t:'The frog jumps in the mud.',e:'🐸'},
+  {t:'I like to eat jam.',e:'🍓'},
+  {t:'The hen is in the pen.',e:'🐔'},
+  {t:'A fox ran to the den.',e:'🦊'},
+  {t:'The pig is big and fat.',e:'🐷'},
+  {t:'We play with a ball.',e:'⚽'},
+  {t:'The bed is soft and warm.',e:'🛏️'},
+  {t:'The ship sails on the sea.',e:'🚢'},
+  {t:'I can hop on one leg.',e:'🦶'},
+  {t:'The bird sits on a branch.',e:'🐦'},
+  {t:'She drinks milk from a cup.',e:'🥛'},
+  {t:'The kite flies in the wind.',e:'🪁'},
+  {t:'A duck swims in the lake.',e:'🦆'},
+  {t:'The bell rings at school.',e:'🔔'},
+  {t:'He kicks the ball to me.',e:'⚽'},
+  {t:'The box is on the shelf.',e:'📦'},
+  {t:'A snail is on the leaf.',e:'🐌'},
+  {t:'The moon shines at night.',e:'🌙'},
+  {t:'I read a book with Mom.',e:'📖'},
+  {t:'The van stops at the shop.',e:'🚐'},
+  {t:'We sing a fun song.',e:'🎵'},
+  {t:'The ant is on the hill.',e:'🐜'},
+  {t:'She runs fast to the tree.',e:'🌳'},
+  {t:'The clock ticks on the wall.',e:'🕐'},
+  {t:'A bee sits on the flower.',e:'🐝'},
+  {t:'The cake is in the oven.',e:'🎂'},
+  {t:'He draws with a pen.',e:'✏️'},
+  {t:'The rain falls on the roof.',e:'🌧️'},
+  {t:'I see a star up high.',e:'⭐'},
+  {t:'The lamp is on the desk.',e:'💡'}
 ];
 
 let readState = {ru:[],en:[]};
+
+const SIGHT_WORDS = new Set(['the','a','an','is','am','are','was','were','i','he','she','it','we','they','my','his','her','to','and','of','do','no','so','or','but','not','can','has','had','have','will','all','this','that','with','from','what','when','said']);
+const PREPOSITIONS = new Set(['in','on','at','up','to','by','for','from','with','into','onto']);
+
+function highlightEn(text){
+  return text.split(' ').map(w=>{
+    const clean=w.replace(/[^a-zA-Z]/g,'').toLowerCase();
+    const punct=w.replace(/[a-zA-Z]/g,'');
+    if(SIGHT_WORDS.has(clean)) return `<span class="sw">${w}</span>`;
+    if(PREPOSITIONS.has(clean)) return `<span class="sw2">${w}</span>`;
+    return w;
+  }).join(' ');
+}
 
 function pickSentences(){
   const usedRu=new Set(), usedEn=new Set();
   readState.ru=[];readState.en=[];
   while(readState.ru.length<5){const i=Math.floor(Math.random()*SENTENCES_RU.length);if(!usedRu.has(i)){usedRu.add(i);readState.ru.push({text:SENTENCES_RU[i],done:false});}}
-  while(readState.en.length<5){const i=Math.floor(Math.random()*SENTENCES_EN.length);if(!usedEn.has(i)){usedEn.add(i);readState.en.push({text:SENTENCES_EN[i],done:false});}}
+  while(readState.en.length<5){const i=Math.floor(Math.random()*SENTENCES_EN.length);if(!usedEn.has(i)){usedEn.add(i);readState.en.push({text:SENTENCES_EN[i].t,emoji:SENTENCES_EN[i].e,done:false});}}
 }
 
 function renderReading(){
   if(!readState.ru.length) pickSentences();
-  ['ru','en'].forEach(lang=>{
-    const el=document.getElementById('read-'+lang);
-    el.innerHTML='';
-    readState[lang].forEach((s,i)=>{
-      const div=document.createElement('div');
-      div.className='read-item'+(s.done?' done':'');
-      div.innerHTML=`<div class="read-num"><span>${i+1}</span></div><div class="read-text">${s.text}</div>`;
-      div.addEventListener('click',()=>{s.done=!s.done;renderReading();
-        if(readState.ru.every(x=>x.done)&&readState.en.every(x=>x.done)){confetti();celebrate();}
-      });
-      el.appendChild(div);
-    });
+  // Russian
+  const ruEl=document.getElementById('read-ru');
+  ruEl.innerHTML='';
+  readState.ru.forEach((s,i)=>{
+    const div=document.createElement('div');
+    div.className='read-item'+(s.done?' done':'');
+    div.innerHTML=`<div class="read-num"><span>${i+1}</span></div><div class="read-text">${s.text}</div>`;
+    div.addEventListener('click',()=>{s.done=!s.done;renderReading();checkAllRead();});
+    ruEl.appendChild(div);
   });
+  // English — notebook style
+  const enEl=document.getElementById('read-en');
+  enEl.innerHTML='';
+  readState.en.forEach((s,i)=>{
+    const div=document.createElement('div');
+    div.className='en-item'+(s.done?' done':'');
+    div.innerHTML=`<div class="en-item-num">${i+1}.</div><div class="en-item-text">${highlightEn(s.text)}</div><div class="en-item-emoji">${s.emoji||''}</div><div class="en-check"></div>`;
+    div.addEventListener('click',()=>{s.done=!s.done;renderReading();checkAllRead();});
+    enEl.appendChild(div);
+  });
+}
+
+function checkAllRead(){
+  if(readState.ru.every(x=>x.done)&&readState.en.every(x=>x.done)){confetti();celebrate();}
 }
 
 document.getElementById('read-new').addEventListener('click',()=>{pickSentences();renderReading();});
