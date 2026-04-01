@@ -413,7 +413,7 @@ body {
 }
 
 .math-list {
-  padding: 14px 20px 20px;
+  padding: 14px 20px 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -422,18 +422,27 @@ body {
 .math-problem {
   background: var(--card);
   border-radius: var(--radius);
-  padding: 16px 20px;
+  padding: 14px 16px;
   box-shadow: var(--shadow-card);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   border-left: 5px solid var(--blue);
-  transition: border-color 0.3s, transform 0.2s;
+  transition: border-color 0.3s, transform 0.2s, background 0.3s;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.math-problem.active {
+  border-left-color: var(--purple);
+  background: #F3EEFE;
+  box-shadow: 0 4px 20px rgba(108,92,231,0.2);
 }
 
 .math-problem.correct {
   border-left-color: var(--green);
   background: var(--green-bg);
+  cursor: default;
 }
 
 .math-problem.wrong {
@@ -466,50 +475,50 @@ body {
   color: white;
 }
 
+.math-problem.active .math-num {
+  background: var(--purple);
+  color: white;
+}
+
 .math-expr {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 900;
   color: var(--text);
   flex: 1;
   letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
-.math-eq {
-  font-size: 28px;
+.math-expr .math-blank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 44px;
+  border: 3px dashed var(--purple-light);
+  border-radius: 12px;
+  background: rgba(162,155,254,0.1);
+  font-size: 26px;
   font-weight: 900;
-  color: var(--text-light);
+  color: var(--purple);
+  transition: all 0.2s;
+  padding: 0 6px;
 }
 
-.math-input {
-  width: 64px;
-  height: 52px;
-  border: 3px solid #DDD;
-  border-radius: 14px;
-  font-size: 28px;
-  font-weight: 900;
-  font-family: 'Nunito', sans-serif;
-  text-align: center;
-  color: var(--text);
-  background: #FAFAFE;
-  -webkit-appearance: none;
-  transition: border-color 0.2s;
+.math-problem.active .math-blank {
+  border-color: var(--purple);
+  background: rgba(108,92,231,0.12);
+  box-shadow: 0 0 0 3px rgba(108,92,231,0.15);
 }
 
-.math-input:focus {
-  outline: none;
-  border-color: var(--blue);
-  background: white;
-}
-
-.math-problem.correct .math-input {
+.math-problem.correct .math-blank {
   border-color: var(--green);
-  background: white;
+  background: rgba(0,184,148,0.1);
   color: var(--green);
-}
-
-.math-problem.wrong .math-input {
-  border-color: var(--coral);
-  color: var(--coral);
+  border-style: solid;
 }
 
 .math-check-icon {
@@ -517,6 +526,76 @@ body {
   width: 28px;
   text-align: center;
   flex-shrink: 0;
+}
+
+/* Number pad */
+.math-numpad {
+  display: none;
+  position: fixed;
+  bottom: calc(80px + var(--safe-bottom));
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: linear-gradient(to bottom, rgba(240,238,255,0.95), rgba(240,238,255,1));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 12px 16px 14px;
+  border-top: 2px solid rgba(108,92,231,0.15);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+
+.math-numpad.visible {
+  display: block;
+}
+
+.numpad-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.numpad-btn {
+  height: 50px;
+  border: none;
+  border-radius: 14px;
+  font-size: 26px;
+  font-weight: 900;
+  font-family: 'Nunito', sans-serif;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s, box-shadow 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.numpad-btn:active { transform: scale(0.92); }
+
+.numpad-btn.nb-digit {
+  background: white;
+  color: var(--text);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.numpad-btn.nb-back {
+  background: var(--orange-bg);
+  color: var(--orange);
+  font-size: 24px;
+}
+
+.numpad-btn.nb-clear {
+  background: #FDE8E8;
+  color: var(--coral);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.numpad-btn.nb-ok {
+  background: linear-gradient(135deg, var(--green), #2ecc71);
+  color: white;
+  font-size: 18px;
+  font-weight: 800;
+  box-shadow: 0 3px 12px rgba(0,184,148,0.3);
 }
 
 .math-refresh {
@@ -1201,7 +1280,25 @@ body {
   </div>
 
   <div class="math-list" id="math-list"></div>
-  <button class="math-refresh" id="math-new">Новые примеры</button>
+  <div class="math-numpad" id="math-numpad">
+    <div class="numpad-grid">
+      <button class="numpad-btn nb-digit" data-d="1">1</button>
+      <button class="numpad-btn nb-digit" data-d="2">2</button>
+      <button class="numpad-btn nb-digit" data-d="3">3</button>
+      <button class="numpad-btn nb-back" data-d="back">⌫</button>
+      <button class="numpad-btn nb-digit" data-d="4">4</button>
+      <button class="numpad-btn nb-digit" data-d="5">5</button>
+      <button class="numpad-btn nb-digit" data-d="6">6</button>
+      <button class="numpad-btn nb-clear" data-d="clear">✕</button>
+      <button class="numpad-btn nb-digit" data-d="7">7</button>
+      <button class="numpad-btn nb-digit" data-d="8">8</button>
+      <button class="numpad-btn nb-digit" data-d="9">9</button>
+      <button class="numpad-btn nb-ok" data-d="ok">OK</button>
+      <button class="numpad-btn nb-digit" data-d="0" style="grid-column: span 2">0</button>
+      <button class="numpad-btn nb-digit" data-d="10" style="grid-column: span 2; font-size:22px">10+</button>
+    </div>
+  </div>
+  <button class="math-refresh" id="math-new">Новые примеры 🔄</button>
 </div>
 
 <!-- READING PRACTICE -->
@@ -1432,14 +1529,62 @@ document.getElementById('btn-rst').addEventListener('click',()=>{if(confirm('С�
 
 // ===== MATH PRACTICE =====
 let mathProblems = [];
+let mathActive = -1; // index of active problem
+let mathBuffer = ''; // current typed digits
 
 function genMathProblems(){
   mathProblems = [];
+  mathActive = -1;
+  mathBuffer = '';
   for(let i=0;i<10;i++){
-    const a = 1+Math.floor(Math.random()*14);
-    const maxB = 20-a;
-    const b = 1+Math.floor(Math.random()*Math.min(maxB,14));
-    mathProblems.push({a,b,answer:a+b,userAnswer:null,correct:null});
+    // Types: 0 = a+b=?, 1 = a-b=?, 2 = ?+b=c, 3 = a+?=c, 4 = ?-b=c (show as c=?-b... no), 5 = a-?=c
+    const type = Math.floor(Math.random()*6);
+    let a,b,answer,op,missing;
+    if(type===0){
+      // a + b = ?
+      a=1+Math.floor(Math.random()*14); b=1+Math.floor(Math.random()*Math.min(20-a,14));
+      answer=a+b; op='+'; missing='result';
+    } else if(type===1){
+      // a - b = ?
+      a=3+Math.floor(Math.random()*17); b=1+Math.floor(Math.random()*(a-1));
+      answer=a-b; op='−'; missing='result';
+    } else if(type===2){
+      // ? + b = c
+      const c=3+Math.floor(Math.random()*17); b=1+Math.floor(Math.random()*(c-1));
+      a=c-b; answer=a; op='+'; missing='first';
+      mathProblems.push({a,b,c,answer,op,missing,userAnswer:'',correct:null});
+      continue;
+    } else if(type===3){
+      // a + ? = c
+      const c=3+Math.floor(Math.random()*17); a=1+Math.floor(Math.random()*(c-1));
+      b=c-a; answer=b; op='+'; missing='second';
+      mathProblems.push({a,b,c,answer,op,missing,userAnswer:'',correct:null});
+      continue;
+    } else if(type===4){
+      // c - ? = b  →  answer is the subtracted number
+      a=3+Math.floor(Math.random()*17); b=1+Math.floor(Math.random()*(a-1));
+      const result=a-b; answer=b; op='−'; missing='second';
+      mathProblems.push({a,b:b,c:result,answer,op,missing,userAnswer:'',correct:null});
+      continue;
+    } else {
+      // ? - b = c  →  answer is the first number
+      const c=1+Math.floor(Math.random()*14); b=1+Math.floor(Math.random()*Math.min(14,19-c));
+      a=c+b; answer=a; op='−'; missing='first';
+      mathProblems.push({a,b,c,answer,op,missing,userAnswer:'',correct:null});
+      continue;
+    }
+    mathProblems.push({a,b,c:answer,answer,op,missing,userAnswer:'',correct:null});
+  }
+}
+
+function mathExprHTML(p){
+  const blank = `<span class="math-blank">${p.correct?p.answer:(p.userAnswer||'?')}</span>`;
+  if(p.missing==='first'){
+    return `${blank} ${p.op} ${p.b} = ${p.c}`;
+  } else if(p.missing==='second'){
+    return `${p.a} ${p.op} ${blank} = ${p.c}`;
+  } else {
+    return `${p.a} ${p.op} ${p.b} = ${blank}`;
   }
 }
 
@@ -1447,41 +1592,35 @@ function renderMath(){
   if(!mathProblems.length) genMathProblems();
   const list=document.getElementById('math-list');
   list.innerHTML='';
-  let solved=0;
   mathProblems.forEach((p,i)=>{
-    if(p.correct) solved++;
     const div=document.createElement('div');
-    div.className='math-problem'+(p.correct===true?' correct':'')+(p.correct===false?' wrong':'');
-    div.innerHTML=`<div class="math-num">${i+1}</div><div class="math-expr">${p.a} + ${p.b}</div><div class="math-eq">=</div><input class="math-input" type="number" inputmode="numeric" pattern="[0-9]*" maxlength="2" ${p.correct?' disabled value="'+p.answer+'"':'value="'+(p.userAnswer!==null?p.userAnswer:'')+'"'}><div class="math-check-icon">${p.correct===true?'✅':p.correct===false?'❌':''}</div>`;
-    const inp=div.querySelector('.math-input');
-    inp.addEventListener('input',e=>{
-      const v=parseInt(e.target.value);
-      if(isNaN(v))return;
-      p.userAnswer=v;
-      if(v===p.answer){
-        p.correct=true;
-        div.classList.remove('wrong');
-        div.classList.add('correct');
-        div.querySelector('.math-check-icon').textContent='✅';
-        inp.disabled=true;
-        updateMathScore();
-        if(mathProblems.every(x=>x.correct)){confetti();celebrate();}
-      } else if(e.target.value.length>=String(p.answer).length){
-        p.correct=false;
-        div.classList.add('wrong');
-        div.querySelector('.math-check-icon').textContent='❌';
-        setTimeout(()=>{
-          p.correct=null;
-          div.classList.remove('wrong');
-          div.querySelector('.math-check-icon').textContent='';
-          e.target.value='';
-          e.target.focus();
-        },800);
-      }
-    });
+    let cls='math-problem';
+    if(p.correct===true) cls+=' correct';
+    if(p.correct===false) cls+=' wrong';
+    if(i===mathActive && !p.correct) cls+=' active';
+    div.className=cls;
+    div.innerHTML=`<div class="math-num">${i+1}</div><div class="math-expr">${mathExprHTML(p)}</div><div class="math-check-icon">${p.correct===true?'✅':p.correct===false?'❌':''}</div>`;
+    if(!p.correct){
+      div.addEventListener('click',()=>{
+        mathActive=i;
+        mathBuffer=p.userAnswer||'';
+        renderMath();
+        document.getElementById('math-numpad').classList.add('visible');
+        // scroll problem into view
+        setTimeout(()=>div.scrollIntoView({behavior:'smooth',block:'center'}),100);
+      });
+    }
     list.appendChild(div);
   });
   updateMathScore();
+  // auto-show numpad if there's an active problem
+  const pad=document.getElementById('math-numpad');
+  if(mathActive>=0 && !mathProblems[mathActive].correct){
+    pad.classList.add('visible');
+    list.style.paddingBottom='240px';
+  } else {
+    list.style.paddingBottom='';
+  }
 }
 
 function updateMathScore(){
@@ -1489,7 +1628,71 @@ function updateMathScore(){
   document.getElementById('m-score').innerHTML='Решено: <b>'+solved+'</b> из <b>10</b>';
 }
 
-document.getElementById('math-new').addEventListener('click',()=>{genMathProblems();renderMath();});
+function mathCheckAnswer(){
+  if(mathActive<0) return;
+  const p=mathProblems[mathActive];
+  if(!mathBuffer) return;
+  const v=parseInt(mathBuffer);
+  p.userAnswer=mathBuffer;
+  if(v===p.answer){
+    p.correct=true;
+    mathBuffer='';
+    // find next unsolved
+    let next=-1;
+    for(let j=mathActive+1;j<mathProblems.length;j++){if(!mathProblems[j].correct){next=j;break;}}
+    if(next===-1) for(let j=0;j<mathActive;j++){if(!mathProblems[j].correct){next=j;break;}}
+    mathActive=next;
+    if(next>=0) mathBuffer=mathProblems[next].userAnswer||'';
+    renderMath();
+    if(mathProblems.every(x=>x.correct)){
+      document.getElementById('math-numpad').classList.remove('visible');
+      confetti();celebrate();
+    }
+  } else {
+    p.correct=false;
+    renderMath();
+    setTimeout(()=>{
+      p.correct=null;
+      p.userAnswer='';
+      mathBuffer='';
+      renderMath();
+    },800);
+  }
+}
+
+// Numpad event delegation
+document.getElementById('math-numpad').addEventListener('click',e=>{
+  const btn=e.target.closest('.numpad-btn');
+  if(!btn) return;
+  const d=btn.dataset.d;
+  if(mathActive<0||mathProblems[mathActive].correct) return;
+  if(d==='back'){
+    mathBuffer=mathBuffer.slice(0,-1);
+    mathProblems[mathActive].userAnswer=mathBuffer;
+    renderMath();
+  } else if(d==='clear'){
+    mathBuffer='';
+    mathProblems[mathActive].userAnswer='';
+    renderMath();
+  } else if(d==='ok'){
+    mathCheckAnswer();
+  } else if(d==='10'){
+    // quick-enter for teens: show 10-19 submenu or just type '1'+'0'
+    if(mathBuffer.length<2){mathBuffer+='1';mathBuffer+='0';}
+    mathProblems[mathActive].userAnswer=mathBuffer;
+    renderMath();
+  } else {
+    if(mathBuffer.length<2){mathBuffer+=d;}
+    mathProblems[mathActive].userAnswer=mathBuffer;
+    renderMath();
+  }
+});
+
+document.getElementById('math-new').addEventListener('click',()=>{
+  genMathProblems();
+  document.getElementById('math-numpad').classList.remove('visible');
+  renderMath();
+});
 
 // ===== READING PRACTICE =====
 const SENTENCES_RU = [
