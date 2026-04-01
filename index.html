@@ -612,11 +612,11 @@ body {
 }
 
 .en-card h3 {
-  background: #1a237e;
+  background: linear-gradient(135deg, #1a237e, #283593);
   color: white;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
-  padding: 12px 18px;
+  padding: 14px 18px;
   margin: 0;
   text-align: center;
   letter-spacing: 0.5px;
@@ -625,70 +625,87 @@ body {
 .en-list {
   display: flex;
   flex-direction: column;
+  gap: 0;
 }
 
 .en-item {
   padding: 14px 16px;
-  background: repeating-linear-gradient(
-    transparent, transparent 31px, #c8e0f4 31px, #c8e0f4 32px
-  );
-  background-position: 0 10px;
-  border-bottom: 2px solid #1a237e;
+  background: white;
+  border-bottom: 2px solid #e8eaf6;
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  flex-direction: column;
+  gap: 8px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: background-color 0.2s;
-  min-height: 70px;
+  transition: all 0.2s;
 }
 
 .en-item:last-child { border-bottom: none; }
+.en-item.done { background: #e8f5e9; }
 
-.en-item.done {
-  background-color: #e8f5e9;
+.en-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
 }
 
 .en-item-num {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 900;
   color: #2e7d32;
   line-height: 1;
   flex-shrink: 0;
-  min-width: 36px;
+  min-width: 40px;
 }
 
 .en-item-text {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
-  line-height: 1.4;
+  line-height: 1.45;
   color: #1a237e;
   flex: 1;
+  background: repeating-linear-gradient(
+    transparent, transparent 30px, #c8e0f4 30px, #c8e0f4 31px
+  );
+  background-position: 0 6px;
+  padding-bottom: 4px;
 }
 
-.en-item-text .sw { color: #d32f2f; } /* sight words: the, a, an */
-.en-item-text .sw2 { color: #7b1fa2; } /* prepositions: in, on, to, with */
-.en-item-text .sw3 { color: #0277bd; text-decoration: underline; text-decoration-color: #0277bd; } /* digraphs: th, sh, ch */
+.en-item-text .sw { color: #d32f2f; font-weight: 900; }
+.en-item-text .sw2 { color: #7b1fa2; font-weight: 900; }
 
-.en-item-emoji {
-  font-size: 32px;
-  flex-shrink: 0;
-}
-
-.en-item.done .en-item-text { text-decoration: line-through; text-decoration-color: rgba(0,0,0,0.2); }
-.en-item.done .en-item-num { color: var(--green); }
-
-.en-check {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 3px solid #DDD;
-  flex-shrink: 0;
+.en-scene {
+  width: 100%;
+  height: 80px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 4px;
+  font-size: 50px;
+  letter-spacing: 8px;
+  position: relative;
+}
+
+.en-scene.bg1 { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); }
+.en-scene.bg2 { background: linear-gradient(135deg, #e3f2fd, #bbdefb); }
+.en-scene.bg3 { background: linear-gradient(135deg, #fff3e0, #ffe0b2); }
+.en-scene.bg4 { background: linear-gradient(135deg, #fce4ec, #f8bbd0); }
+.en-scene.bg5 { background: linear-gradient(135deg, #f3e5f5, #e1bee7); }
+.en-scene.bg6 { background: linear-gradient(135deg, #e0f7fa, #b2ebf2); }
+
+.en-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.25s;
+  background: rgba(255,255,255,0.3);
 }
 
 .en-item.done .en-check {
@@ -702,6 +719,9 @@ body {
   font-size: 15px;
   font-weight: 900;
 }
+
+.en-item.done .en-item-text { text-decoration: line-through; text-decoration-color: rgba(0,0,0,0.15); }
+.en-item.done .en-item-num { color: var(--green); }
 
 /* ===== MOOD & NOTE ===== */
 .bottom-card {
@@ -1484,46 +1504,46 @@ const SENTENCES_RU = [
 ];
 
 const SENTENCES_EN = [
-  {t:'Put a pen in the bag.',e:'🎒'},
-  {t:'Hit it with a bat.',e:'🏏'},
-  {t:'The tea cup is on the desk.',e:'☕'},
-  {t:'The cat sits on the mat.',e:'🐱'},
-  {t:'A big dog runs in the park.',e:'🐕'},
-  {t:'The sun is hot in the sky.',e:'☀️'},
-  {t:'I can see a red bus.',e:'🚌'},
-  {t:'The fish is in the pond.',e:'🐟'},
-  {t:'She has a hat on.',e:'👒'},
-  {t:'He sat on a log.',e:'🪵'},
-  {t:'The frog jumps in the mud.',e:'🐸'},
-  {t:'I like to eat jam.',e:'🍓'},
-  {t:'The hen is in the pen.',e:'🐔'},
-  {t:'A fox ran to the den.',e:'🦊'},
-  {t:'The pig is big and fat.',e:'🐷'},
-  {t:'We play with a ball.',e:'⚽'},
-  {t:'The bed is soft and warm.',e:'🛏️'},
-  {t:'The ship sails on the sea.',e:'🚢'},
-  {t:'I can hop on one leg.',e:'🦶'},
-  {t:'The bird sits on a branch.',e:'🐦'},
-  {t:'She drinks milk from a cup.',e:'🥛'},
-  {t:'The kite flies in the wind.',e:'🪁'},
-  {t:'A duck swims in the lake.',e:'🦆'},
-  {t:'The bell rings at school.',e:'🔔'},
-  {t:'He kicks the ball to me.',e:'⚽'},
-  {t:'The box is on the shelf.',e:'📦'},
-  {t:'A snail is on the leaf.',e:'🐌'},
-  {t:'The moon shines at night.',e:'🌙'},
-  {t:'I read a book with Mom.',e:'📖'},
-  {t:'The van stops at the shop.',e:'🚐'},
-  {t:'We sing a fun song.',e:'🎵'},
-  {t:'The ant is on the hill.',e:'🐜'},
-  {t:'She runs fast to the tree.',e:'🌳'},
-  {t:'The clock ticks on the wall.',e:'🕐'},
-  {t:'A bee sits on the flower.',e:'🐝'},
-  {t:'The cake is in the oven.',e:'🎂'},
-  {t:'He draws with a pen.',e:'✏️'},
-  {t:'The rain falls on the roof.',e:'🌧️'},
-  {t:'I see a star up high.',e:'⭐'},
-  {t:'The lamp is on the desk.',e:'💡'}
+  {t:'Put a pen in the bag.',e:'✏️🎒',bg:3},
+  {t:'Hit it with a bat.',e:'🏏🏐',bg:1},
+  {t:'The tea cup is on the desk.',e:'☕🪵',bg:3},
+  {t:'The cat sits on the mat.',e:'🐱🧶',bg:4},
+  {t:'A big dog runs in the park.',e:'🐕🌳🌳',bg:1},
+  {t:'The sun is hot in the sky.',e:'☀️🌤️🏖️',bg:3},
+  {t:'I can see a red bus.',e:'🚌💨🏙️',bg:2},
+  {t:'The fish is in the pond.',e:'🐟💧🌿',bg:6},
+  {t:'She has a hat on.',e:'👧👒🌸',bg:4},
+  {t:'He sat on a log.',e:'👦🪵🌲',bg:1},
+  {t:'The frog jumps in the mud.',e:'🐸💦🟤',bg:1},
+  {t:'I like to eat jam.',e:'🍞🍓😋',bg:3},
+  {t:'The hen is in the pen.',e:'🐔🪹🌾',bg:3},
+  {t:'A fox ran to the den.',e:'🦊🏃🕳️',bg:3},
+  {t:'The pig is big and fat.',e:'🐷🐽🌽',bg:4},
+  {t:'We play with a ball.',e:'👦⚽👧',bg:1},
+  {t:'The bed is soft and warm.',e:'🛏️😴💤',bg:5},
+  {t:'The ship sails on the sea.',e:'🚢🌊⛵',bg:2},
+  {t:'I can hop on one leg.',e:'🧒🦶💫',bg:5},
+  {t:'The bird sits on a branch.',e:'🐦🌿🌳',bg:1},
+  {t:'She drinks milk from a cup.',e:'👧🥛🐄',bg:6},
+  {t:'The kite flies in the wind.',e:'🪁🌬️☁️',bg:2},
+  {t:'A duck swims in the lake.',e:'🦆💧🌅',bg:6},
+  {t:'The bell rings at school.',e:'🔔🏫📚',bg:3},
+  {t:'He kicks the ball to me.',e:'👦⚽🥅',bg:1},
+  {t:'The box is on the shelf.',e:'📦📚🪵',bg:3},
+  {t:'A snail is on the leaf.',e:'🐌🍃🌧️',bg:1},
+  {t:'The moon shines at night.',e:'🌙⭐🌌',bg:5},
+  {t:'I read a book with Mom.',e:'👩📖👦',bg:4},
+  {t:'The van stops at the shop.',e:'🚐🏪🛍️',bg:3},
+  {t:'We sing a fun song.',e:'👦🎵👧',bg:5},
+  {t:'The ant is on the hill.',e:'🐜⛰️🌿',bg:1},
+  {t:'She runs fast to the tree.',e:'👧💨🌳',bg:1},
+  {t:'The clock ticks on the wall.',e:'🕐🧱🔔',bg:2},
+  {t:'A bee sits on the flower.',e:'🐝🌸🌻',bg:3},
+  {t:'The cake is in the oven.',e:'🎂🔥😋',bg:3},
+  {t:'He draws with a pen.',e:'👦✏️🎨',bg:6},
+  {t:'The rain falls on the roof.',e:'🌧️🏠💧',bg:2},
+  {t:'I see a star up high.',e:'👦⭐🌌',bg:5},
+  {t:'The lamp is on the desk.',e:'💡📝🪵',bg:3}
 ];
 
 let readState = {ru:[],en:[]};
@@ -1545,7 +1565,7 @@ function pickSentences(){
   const usedRu=new Set(), usedEn=new Set();
   readState.ru=[];readState.en=[];
   while(readState.ru.length<5){const i=Math.floor(Math.random()*SENTENCES_RU.length);if(!usedRu.has(i)){usedRu.add(i);readState.ru.push({text:SENTENCES_RU[i],done:false});}}
-  while(readState.en.length<5){const i=Math.floor(Math.random()*SENTENCES_EN.length);if(!usedEn.has(i)){usedEn.add(i);readState.en.push({text:SENTENCES_EN[i].t,emoji:SENTENCES_EN[i].e,done:false});}}
+  while(readState.en.length<5){const i=Math.floor(Math.random()*SENTENCES_EN.length);if(!usedEn.has(i)){usedEn.add(i);readState.en.push({text:SENTENCES_EN[i].t,emoji:SENTENCES_EN[i].e,bg:SENTENCES_EN[i].bg||1,done:false});}}
 }
 
 function renderReading(){
@@ -1566,7 +1586,7 @@ function renderReading(){
   readState.en.forEach((s,i)=>{
     const div=document.createElement('div');
     div.className='en-item'+(s.done?' done':'');
-    div.innerHTML=`<div class="en-item-num">${i+1}.</div><div class="en-item-text">${highlightEn(s.text)}</div><div class="en-item-emoji">${s.emoji||''}</div><div class="en-check"></div>`;
+    div.innerHTML=`<div class="en-top"><div class="en-item-num">${i+1}.</div><div class="en-item-text">${highlightEn(s.text)}</div></div><div class="en-scene bg${s.bg||1}"><span>${s.emoji||''}</span><div class="en-check"></div></div>`;
     div.addEventListener('click',()=>{s.done=!s.done;renderReading();checkAllRead();});
     enEl.appendChild(div);
   });
