@@ -748,6 +748,10 @@ body {
   overflow: hidden;
 }
 
+.ru-card h3 {
+  background: linear-gradient(135deg, #c62828, #e53935);
+}
+
 .en-card h3 {
   background: linear-gradient(135deg, #1a237e, #283593);
   color: white;
@@ -1367,9 +1371,9 @@ body {
 
   <div style="height:14px"></div>
 
-  <div class="sec-card">
+  <div class="en-card ru-card">
     <h3>🇷🇺 Прочитай вслух</h3>
-    <div class="read-list" id="read-ru"></div>
+    <div class="en-list" id="read-ru"></div>
   </div>
 
   <div class="en-card">
@@ -1765,14 +1769,46 @@ document.getElementById('math-new').addEventListener('click',()=>{
 
 // ===== READING PRACTICE =====
 const SENTENCES_RU = [
-  'Маша любит играть с мячом.','Кот спит на диване.','Птицы поют весной.','Солнце светит ярко.','Деревья растут в парке.',
-  'Мама готовит вкусный суп.','Собака бежит по дороге.','Рыбки плавают в пруду.','Мишка ест вкусный мёд.','Зимой идёт белый снег.',
-  'Папа читает книгу.','Дети играют во дворе.','Бабочка сидит на цветке.','Луна светит ночью.','Лягушка прыгнула в воду.',
-  'Девочка рисует дом.','Мальчик катается на велосипеде.','Ёжик несёт грибы.','Белка грызёт орехи.','Дождь стучит по крыше.',
-  'Зайчик спрятался в кустах.','Петух кричит по утрам.','Рыба живёт в реке.','Ветер дует с моря.','Цветы пахнут сладко.',
-  'Корова даёт молоко.','Лиса живёт в лесу.','Пчёлы делают мёд.','Снежинки летят с неба.','Радуга после дождя.',
-  'Мячик укатился далеко.','Котёнок играет с клубком.','Утром всходит солнце.','Мама поёт песню.','Машина едет быстро.',
-  'Самолёт летит высоко.','Весной тает снег.','Гриб растёт под ёлкой.','Щенок виляет хвостом.','Звёзды горят на небе.'
+  {t:'Маша любит играть с мячом.',e:'👧⚽🌳',bg:1},
+  {t:'Кот спит на диване.',e:'🐱😴🛋️',bg:4},
+  {t:'Птицы поют весной.',e:'🐦🎵🌸',bg:1},
+  {t:'Солнце светит ярко.',e:'☀️🌻🏖️',bg:3},
+  {t:'Деревья растут в парке.',e:'🌳🌲🌿',bg:1},
+  {t:'Мама готовит вкусный суп.',e:'👩‍🍳🍲🥕',bg:3},
+  {t:'Собака бежит по дороге.',e:'🐕💨🛤️',bg:2},
+  {t:'Рыбки плавают в пруду.',e:'🐟💧🌿',bg:6},
+  {t:'Мишка ест вкусный мёд.',e:'🐻🍯🌳',bg:3},
+  {t:'Зимой идёт белый снег.',e:'❄️⛄🌨️',bg:2},
+  {t:'Папа читает книгу.',e:'👨📖🪑',bg:5},
+  {t:'Дети играют во дворе.',e:'👦👧🎈',bg:1},
+  {t:'Бабочка сидит на цветке.',e:'🦋🌺🌿',bg:4},
+  {t:'Луна светит ночью.',e:'🌙⭐🌌',bg:5},
+  {t:'Лягушка прыгнула в воду.',e:'🐸💦🌊',bg:6},
+  {t:'Девочка рисует дом.',e:'👧🎨🏠',bg:4},
+  {t:'Мальчик катается на велосипеде.',e:'👦🚲🌳',bg:1},
+  {t:'Ёжик несёт грибы.',e:'🦔🍄🍂',bg:3},
+  {t:'Белка грызёт орехи.',e:'🐿️🌰🌲',bg:1},
+  {t:'Дождь стучит по крыше.',e:'🌧️🏠💧',bg:2},
+  {t:'Зайчик спрятался в кустах.',e:'🐰🌿🍃',bg:1},
+  {t:'Петух кричит по утрам.',e:'🐓🌅🏡',bg:3},
+  {t:'Рыба живёт в реке.',e:'🐟🏞️🌊',bg:6},
+  {t:'Ветер дует с моря.',e:'💨🌊⛵',bg:2},
+  {t:'Цветы пахнут сладко.',e:'🌷🌹🌻',bg:4},
+  {t:'Корова даёт молоко.',e:'🐄🥛🌾',bg:1},
+  {t:'Лиса живёт в лесу.',e:'🦊🌲🍂',bg:3},
+  {t:'Пчёлы делают мёд.',e:'🐝🍯🌻',bg:3},
+  {t:'Снежинки летят с неба.',e:'❄️🌨️☁️',bg:2},
+  {t:'Радуга после дождя.',e:'🌈🌧️☀️',bg:5},
+  {t:'Мячик укатился далеко.',e:'⚽💨🏃',bg:1},
+  {t:'Котёнок играет с клубком.',e:'🐱🧶😺',bg:4},
+  {t:'Утром всходит солнце.',e:'🌅☀️🐓',bg:3},
+  {t:'Мама поёт песню.',e:'👩🎵🎶',bg:5},
+  {t:'Машина едет быстро.',e:'🚗💨🛣️',bg:2},
+  {t:'Самолёт летит высоко.',e:'✈️☁️🌤️',bg:2},
+  {t:'Весной тает снег.',e:'🌸💧☀️',bg:1},
+  {t:'Гриб растёт под ёлкой.',e:'🍄🌲🍂',bg:1},
+  {t:'Щенок виляет хвостом.',e:'🐶💕🦴',bg:4},
+  {t:'Звёзды горят на небе.',e:'⭐🌙✨',bg:5}
 ];
 
 const SENTENCES_EN = [
@@ -1838,7 +1874,7 @@ function highlightEn(text){
 function pickSentences(){
   const usedRu=new Set(), usedEn=new Set();
   readState.ru=[];readState.en=[];
-  while(readState.ru.length<5){const i=Math.floor(Math.random()*SENTENCES_RU.length);if(!usedRu.has(i)){usedRu.add(i);readState.ru.push({text:SENTENCES_RU[i],done:false});}}
+  while(readState.ru.length<5){const i=Math.floor(Math.random()*SENTENCES_RU.length);if(!usedRu.has(i)){usedRu.add(i);readState.ru.push({text:SENTENCES_RU[i].t,emoji:SENTENCES_RU[i].e,bg:SENTENCES_RU[i].bg||1,done:false});}}
   while(readState.en.length<5){const i=Math.floor(Math.random()*SENTENCES_EN.length);if(!usedEn.has(i)){usedEn.add(i);readState.en.push({text:SENTENCES_EN[i].t,emoji:SENTENCES_EN[i].e,bg:SENTENCES_EN[i].bg||1,done:false});}}
 }
 
@@ -1880,16 +1916,17 @@ function playRec(key, i){
 
 function renderReading(){
   if(!readState.ru.length) pickSentences();
-  // Russian
+  // Russian — same card style as English
   const ruEl=document.getElementById('read-ru');
   ruEl.innerHTML='';
   readState.ru.forEach((s,i)=>{
     const div=document.createElement('div');
-    div.className='read-item'+(s.done?' done':'');
+    div.className='en-item'+(s.done?' done':'');
     const isRec = activeRecIdx==='ru'+i;
     const hasAudio = !!s.audioURL;
-    div.innerHTML=`<div class="read-num"><span>${i+1}</span></div><div style="flex:1"><div class="read-text">${s.text}</div><div class="read-actions"><button class="rec-btn rec-start${isRec?' recording':''}" data-rec="ru-${i}">${isRec?'⏹ Стоп':'🎙️ Запись'}</button><button class="rec-btn rec-play" data-play="ru-${i}" ${hasAudio?'':'disabled'}>▶️ ${hasAudio?'Слушать':'—'}</button></div></div>`;
-    div.querySelector('.read-text').addEventListener('click',()=>{s.done=!s.done;renderReading();checkAllRead();});
+    div.innerHTML=`<div class="en-top"><div class="en-item-num">${i+1}.</div><div class="en-item-text" style="color:#c62828">${s.text}</div></div><div class="en-scene bg${s.bg||1}"><span>${s.emoji||''}</span><div class="en-check"></div></div><div class="en-actions"><button class="rec-btn rec-start${isRec?' recording':''}" data-rec="ru-${i}">${isRec?'⏹ Стоп':'🎙️ Запись'}</button><button class="rec-btn rec-play" data-play="ru-${i}" ${hasAudio?'':'disabled'}>▶️ ${hasAudio?'Слушать':'—'}</button></div>`;
+    div.querySelector('.en-top').addEventListener('click',()=>{s.done=!s.done;renderReading();checkAllRead();});
+    div.querySelector('.en-scene').addEventListener('click',()=>{s.done=!s.done;renderReading();checkAllRead();});
     div.querySelector('[data-rec]').addEventListener('click',e=>{e.stopPropagation();startRec('ru',i);});
     div.querySelector('[data-play]').addEventListener('click',e=>{e.stopPropagation();playRec('ru',i);});
     ruEl.appendChild(div);
