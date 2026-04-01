@@ -389,6 +389,222 @@ body {
 .task[data-skill="writing"] .task-emoji { background: #FFEFEF; }
 .task[data-skill="writing"] .task-label { color: var(--coral); }
 
+/* ===== MATH PRACTICE SCREEN ===== */
+.math-intro {
+  margin: -14px 20px 0;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.math-score {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-light);
+}
+
+.math-score b {
+  color: var(--green);
+  font-size: 18px;
+}
+
+.math-list {
+  padding: 14px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.math-problem {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-left: 5px solid var(--blue);
+  transition: border-color 0.3s, transform 0.2s;
+}
+
+.math-problem.correct {
+  border-left-color: var(--green);
+  background: var(--green-bg);
+}
+
+.math-problem.wrong {
+  border-left-color: var(--coral);
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.math-num {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--blue);
+  background: var(--blue-bg);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.math-problem.correct .math-num {
+  background: var(--green);
+  color: white;
+}
+
+.math-expr {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--text);
+  flex: 1;
+  letter-spacing: 1px;
+}
+
+.math-eq {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--text-light);
+}
+
+.math-input {
+  width: 64px;
+  height: 52px;
+  border: 3px solid #DDD;
+  border-radius: 14px;
+  font-size: 28px;
+  font-weight: 900;
+  font-family: 'Nunito', sans-serif;
+  text-align: center;
+  color: var(--text);
+  background: #FAFAFE;
+  -webkit-appearance: none;
+  transition: border-color 0.2s;
+}
+
+.math-input:focus {
+  outline: none;
+  border-color: var(--blue);
+  background: white;
+}
+
+.math-problem.correct .math-input {
+  border-color: var(--green);
+  background: white;
+  color: var(--green);
+}
+
+.math-problem.wrong .math-input {
+  border-color: var(--coral);
+  color: var(--coral);
+}
+
+.math-check-icon {
+  font-size: 22px;
+  width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.math-refresh {
+  margin: 0 20px 20px;
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  color: white;
+  font-size: 16px;
+  font-weight: 800;
+  font-family: 'Nunito', sans-serif;
+  width: calc(100% - 40px);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 4px 16px rgba(9,132,227,0.3);
+  transition: transform 0.15s;
+}
+
+.math-refresh:active { transform: scale(0.97); }
+
+/* ===== READING PRACTICE ===== */
+.read-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.read-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #FAFAFE;
+  border-radius: 14px;
+  border-left: 4px solid var(--orange);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s;
+}
+
+.read-item.done {
+  border-left-color: var(--green);
+  background: var(--green-bg);
+  opacity: 0.7;
+}
+
+.read-num {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--orange);
+  background: var(--orange-bg);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.read-item.done .read-num {
+  background: var(--green);
+  color: white;
+}
+
+.read-item.done .read-num::after {
+  content: '✓';
+}
+
+.read-item.done .read-num span { display: none; }
+
+.read-text {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.read-item.done .read-text {
+  text-decoration: line-through;
+  text-decoration-color: rgba(0,0,0,0.15);
+}
+
+#read-en .read-item { border-left-color: var(--blue); }
+#read-en .read-num { color: var(--blue); background: var(--blue-bg); }
+#read-en .read-item.done .read-num { background: var(--green); color: white; }
+
 /* ===== MOOD & NOTE ===== */
 .bottom-card {
   margin: 12px 20px 20px;
@@ -856,9 +1072,46 @@ body {
   </div>
 </div>
 
+<!-- MATH PRACTICE -->
+<div id="scr-mathpractice" class="scr">
+  <div class="header">
+    <div class="header-top"><h1>Примеры 🧮</h1></div>
+  </div>
+
+  <div class="math-intro">
+    <div class="math-score" id="m-score">Решено: <b>0</b> из <b>10</b></div>
+  </div>
+
+  <div class="math-list" id="math-list"></div>
+  <button class="math-refresh" id="math-new">Новые примеры</button>
+</div>
+
+<!-- READING PRACTICE -->
+<div id="scr-reading" class="scr">
+  <div class="header">
+    <div class="header-top"><h1>Чтение 📖</h1></div>
+  </div>
+
+  <div style="height:14px"></div>
+
+  <div class="sec-card">
+    <h3>🇷🇺 Прочитай вслух</h3>
+    <div class="read-list" id="read-ru"></div>
+  </div>
+
+  <div class="sec-card">
+    <h3>🇬🇧 Read aloud</h3>
+    <div class="read-list" id="read-en"></div>
+  </div>
+
+  <button class="math-refresh" id="read-new" style="margin-top:0">Новые предложения</button>
+</div>
+
 <!-- TAB BAR -->
 <div class="tabs">
   <button class="tab on" data-t="today"><div class="tab-ico">📋</div><div class="tab-txt">Сегодня</div></button>
+  <button class="tab" data-t="mathpractice"><div class="tab-ico">🧮</div><div class="tab-txt">Примеры</div></button>
+  <button class="tab" data-t="reading"><div class="tab-ico">📖</div><div class="tab-txt">Чтение</div></button>
   <button class="tab" data-t="progress"><div class="tab-ico">📊</div><div class="tab-txt">Прогресс</div></button>
   <button class="tab" data-t="settings"><div class="tab-ico">⚙️</div><div class="tab-txt">Настройки</div></button>
 </div>
@@ -1051,13 +1304,125 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
   document.querySelectorAll('.scr').forEach(x=>x.classList.remove('on'));
   b.classList.add('on');document.getElementById('scr-'+b.dataset.t).classList.add('on');
-  if(b.dataset.t==='progress')renderProgress();if(b.dataset.t==='settings')renderSettings();
+  if(b.dataset.t==='progress')renderProgress();if(b.dataset.t==='settings')renderSettings();if(b.dataset.t==='mathpractice')renderMath();if(b.dataset.t==='reading')renderReading();
 }));
 
 document.getElementById('btn-exp').addEventListener('click',()=>{const b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='misha-edu-'+td()+'.json';a.click();});
 document.getElementById('btn-imp').addEventListener('click',()=>document.getElementById('imp-file').click());
 document.getElementById('imp-file').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.days&&d.phases&&confirm('Заменить данные?')){D=d;sv(D);render();}}catch{alert('Ошибка');}};r.readAsText(f);e.target.value='';});
 document.getElementById('btn-rst').addEventListener('click',()=>{if(confirm('Сбросить ВСЕ?')&&confirm('Точно?')){localStorage.removeItem(KEY);D=ld();cur=td();render();}});
+
+// ===== MATH PRACTICE =====
+let mathProblems = [];
+
+function genMathProblems(){
+  mathProblems = [];
+  for(let i=0;i<10;i++){
+    const a = 1+Math.floor(Math.random()*14);
+    const maxB = 20-a;
+    const b = 1+Math.floor(Math.random()*Math.min(maxB,14));
+    mathProblems.push({a,b,answer:a+b,userAnswer:null,correct:null});
+  }
+}
+
+function renderMath(){
+  if(!mathProblems.length) genMathProblems();
+  const list=document.getElementById('math-list');
+  list.innerHTML='';
+  let solved=0;
+  mathProblems.forEach((p,i)=>{
+    if(p.correct) solved++;
+    const div=document.createElement('div');
+    div.className='math-problem'+(p.correct===true?' correct':'')+(p.correct===false?' wrong':'');
+    div.innerHTML=`<div class="math-num">${i+1}</div><div class="math-expr">${p.a} + ${p.b}</div><div class="math-eq">=</div><input class="math-input" type="number" inputmode="numeric" pattern="[0-9]*" maxlength="2" ${p.correct?' disabled value="'+p.answer+'"':'value="'+(p.userAnswer!==null?p.userAnswer:'')+'"'}><div class="math-check-icon">${p.correct===true?'✅':p.correct===false?'❌':''}</div>`;
+    const inp=div.querySelector('.math-input');
+    inp.addEventListener('input',e=>{
+      const v=parseInt(e.target.value);
+      if(isNaN(v))return;
+      p.userAnswer=v;
+      if(v===p.answer){
+        p.correct=true;
+        div.classList.remove('wrong');
+        div.classList.add('correct');
+        div.querySelector('.math-check-icon').textContent='✅';
+        inp.disabled=true;
+        updateMathScore();
+        if(mathProblems.every(x=>x.correct)){confetti();celebrate();}
+      } else if(e.target.value.length>=String(p.answer).length){
+        p.correct=false;
+        div.classList.add('wrong');
+        div.querySelector('.math-check-icon').textContent='❌';
+        setTimeout(()=>{
+          p.correct=null;
+          div.classList.remove('wrong');
+          div.querySelector('.math-check-icon').textContent='';
+          e.target.value='';
+          e.target.focus();
+        },800);
+      }
+    });
+    list.appendChild(div);
+  });
+  updateMathScore();
+}
+
+function updateMathScore(){
+  const solved=mathProblems.filter(p=>p.correct).length;
+  document.getElementById('m-score').innerHTML='Решено: <b>'+solved+'</b> из <b>10</b>';
+}
+
+document.getElementById('math-new').addEventListener('click',()=>{genMathProblems();renderMath();});
+
+// ===== READING PRACTICE =====
+const SENTENCES_RU = [
+  'Маша любит играть с мячом.','Кот спит на диване.','Птицы поют весной.','Солнце светит ярко.','Деревья растут в парке.',
+  'Мама готовит вкусный суп.','Собака бежит по дороге.','Рыбки плавают в пруду.','Мишка ест вкусный мёд.','Зимой идёт белый снег.',
+  'Папа читает книгу.','Дети играют во дворе.','Бабочка сидит на цветке.','Луна светит ночью.','Лягушка прыгнула в воду.',
+  'Девочка рисует дом.','Мальчик катается на велосипеде.','Ёжик несёт грибы.','Белка грызёт орехи.','Дождь стучит по крыше.',
+  'Зайчик спрятался в кустах.','Петух кричит по утрам.','Рыба живёт в реке.','Ветер дует с моря.','Цветы пахнут сладко.',
+  'Корова даёт молоко.','Лиса живёт в лесу.','Пчёлы делают мёд.','Снежинки летят с неба.','Радуга после дождя.',
+  'Мячик укатился далеко.','Котёнок играет с клубком.','Утром всходит солнце.','Мама поёт песню.','Машина едет быстро.',
+  'Самолёт летит высоко.','Весной тает снег.','Гриб растёт под ёлкой.','Щенок виляет хвостом.','Звёзды горят на небе.'
+];
+
+const SENTENCES_EN = [
+  'Masha loves to play ball.','The cat sleeps on the sofa.','Birds sing in spring.','The sun shines brightly.','Trees grow in the park.',
+  'Mom is cooking a tasty soup.','The dog runs on the road.','Fish swim in the pond.','The bear eats sweet honey.','Snow falls in winter.',
+  'Dad reads a book.','Children play outside.','A butterfly sits on a flower.','The moon shines at night.','The frog jumped into water.',
+  'A girl draws a house.','A boy rides a bike.','The hedgehog carries mushrooms.','The squirrel eats nuts.','Rain taps on the roof.',
+  'The bunny hid in the bushes.','The rooster crows each morning.','A fish lives in the river.','Wind blows from the sea.','Flowers smell sweet.',
+  'A cow gives milk.','The fox lives in the forest.','Bees make honey.','Snowflakes fall from the sky.','A rainbow after the rain.',
+  'The ball rolled far away.','A kitten plays with yarn.','The sun rises each morning.','Mom sings a song.','The car goes fast.',
+  'A plane flies high.','Snow melts in spring.','A mushroom grows under a tree.','The puppy wags its tail.','Stars glow in the sky.'
+];
+
+let readState = {ru:[],en:[]};
+
+function pickSentences(){
+  const usedRu=new Set(), usedEn=new Set();
+  readState.ru=[];readState.en=[];
+  while(readState.ru.length<5){const i=Math.floor(Math.random()*SENTENCES_RU.length);if(!usedRu.has(i)){usedRu.add(i);readState.ru.push({text:SENTENCES_RU[i],done:false});}}
+  while(readState.en.length<5){const i=Math.floor(Math.random()*SENTENCES_EN.length);if(!usedEn.has(i)){usedEn.add(i);readState.en.push({text:SENTENCES_EN[i],done:false});}}
+}
+
+function renderReading(){
+  if(!readState.ru.length) pickSentences();
+  ['ru','en'].forEach(lang=>{
+    const el=document.getElementById('read-'+lang);
+    el.innerHTML='';
+    readState[lang].forEach((s,i)=>{
+      const div=document.createElement('div');
+      div.className='read-item'+(s.done?' done':'');
+      div.innerHTML=`<div class="read-num"><span>${i+1}</span></div><div class="read-text">${s.text}</div>`;
+      div.addEventListener('click',()=>{s.done=!s.done;renderReading();
+        if(readState.ru.every(x=>x.done)&&readState.en.every(x=>x.done)){confetti();celebrate();}
+      });
+      el.appendChild(div);
+    });
+  });
+}
+
+document.getElementById('read-new').addEventListener('click',()=>{pickSentences();renderReading();});
 
 render();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
