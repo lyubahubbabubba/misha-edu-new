@@ -680,6 +680,64 @@ body {
   text-decoration-color: rgba(0,0,0,0.15);
 }
 
+/* ===== RECORDING BUTTONS ===== */
+.read-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.rec-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 800;
+  font-family: 'Nunito', sans-serif;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s, box-shadow 0.1s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.rec-btn:active { transform: scale(0.93); }
+
+.rec-btn.rec-start {
+  background: linear-gradient(135deg, #FF6B6B, #E84393);
+  color: white;
+  box-shadow: 0 2px 10px rgba(232,67,147,0.3);
+}
+
+.rec-btn.rec-start.recording {
+  background: linear-gradient(135deg, #E84393, #c0392b);
+  animation: pulse-rec 1s ease infinite;
+}
+
+@keyframes pulse-rec {
+  0%, 100% { box-shadow: 0 2px 10px rgba(232,67,147,0.3); }
+  50% { box-shadow: 0 2px 20px rgba(232,67,147,0.6); }
+}
+
+.rec-btn.rec-play {
+  background: linear-gradient(135deg, var(--green), #2ecc71);
+  color: white;
+  box-shadow: 0 2px 10px rgba(0,184,148,0.3);
+}
+
+.rec-btn.rec-play:disabled {
+  background: #DDD;
+  color: #AAA;
+  box-shadow: none;
+}
+
+.en-actions {
+  display: flex;
+  gap: 6px;
+  padding: 0 16px 10px;
+}
+
 /* ===== ENGLISH NOTEBOOK STYLE ===== */
 .en-card {
   margin: 0 20px 14px;
@@ -1750,6 +1808,8 @@ const SENTENCES_EN = [
 ];
 
 let readState = {ru:[],en:[]};
+let activeRecorder = null;
+let activeRecIdx = null;
 
 const SIGHT_WORDS = new Set(['the','a','an','is','am','are','was','were','i','he','she','it','we','they','my','his','her','to','and','of','do','no','so','or','but','not','can','has','had','have','will','all','this','that','with','from','what','when','said']);
 const PREPOSITIONS = new Set(['in','on','at','up','to','by','for','from','with','into','onto']);
@@ -1771,6 +1831,42 @@ function pickSentences(){
   while(readState.en.length<5){const i=Math.floor(Math.random()*SENTENCES_EN.length);if(!usedEn.has(i)){usedEn.add(i);readState.en.push({text:SENTENCES_EN[i].t,emoji:SENTENCES_EN[i].e,bg:SENTENCES_EN[i].bg||1,done:false});}}
 }
 
+function startRec(key, i){
+  // key = 'ru' or 'en', i = sentence index
+  const id = key+i;
+  if(activeRecorder && activeRecIdx===id){
+    // stop recording
+    activeRecorder.stop();
+    return;
+  }
+  if(activeRecorder){activeRecorder.stop();}
+  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+    const mr = new MediaRecorder(stream);
+    const chunks = [];
+    mr.ondataavailable = e => chunks.push(e.data);
+    mr.onstop = () => {
+      stream.getTracks().forEach(t=>t.stop());
+      const blob = new Blob(chunks, {type:'audio/webm'});
+      const url = URL.createObjectURL(blob);
+      readState[key][i].audioURL = url;
+      activeRecorder = null;
+      activeRecIdx = null;
+      renderReading();
+    };
+    mr.start();
+    activeRecorder = mr;
+    activeRecIdx = id;
+    renderReading();
+  }).catch(()=>{alert('Разреши доступ к микрофону 🎙️');});
+}
+
+function playRec(key, i){
+  const url = readState[key][i].audioURL;
+  if(!url) return;
+  const a = new Audio(url);
+  a.play();
+}
+
 function renderReading(){
   if(!readState.ru.length) pickSentences();
   // Russian
@@ -1779,8 +1875,12 @@ function renderReading(){
   readState.ru.forEach((s,i)=>{
     const div=document.createElement('div');
     div.className='read-item'+(s.done?' done':'');
-    div.innerHTML=`<div class="read-num"><span>${i+1}</span></div><div class="read-text">${s.text}</div>`;
-    div.addEventListener('click',()=>{s.done=!s.done;renderReading();checkAllRead();});
+    const isRec = activeRecIdx==='ru'+i;
+    const hasAudio = !!s.audioURL;
+    div.innerHTML=`<div class="read-num"><span>${i+1}</span></div><div style="flex:1"><div class="read-text">${s.text}</div><div class="read-actions"><button class="rec-btn rec-start${isRec?' recording':''}" data-rec="ru-${i}">${isRec?'⏹ Стоп':'🎙️ Запись'}</button><button class="rec-btn rec-play" data-play="ru-${i}" ${hasAudio?'':'disabled'}>▶️ ${hasAudio?'Слушать':'—'}</button></div></div>`;
+    div.querySelector('.read-text').addEventListener('click',()=>{s.done=!s.done;renderReading();checkAllRead();});
+    div.querySelector('[data-rec]').addEventListener('click',e=>{e.stopPropagation();startRec('ru',i);});
+    div.querySelector('[data-play]').addEventListener('click',e=>{e.stopPropagation();playRec('ru',i);});
     ruEl.appendChild(div);
   });
   // English — notebook style
@@ -1789,8 +1889,13 @@ function renderReading(){
   readState.en.forEach((s,i)=>{
     const div=document.createElement('div');
     div.className='en-item'+(s.done?' done':'');
-    div.innerHTML=`<div class="en-top"><div class="en-item-num">${i+1}.</div><div class="en-item-text">${highlightEn(s.text)}</div></div><div class="en-scene bg${s.bg||1}"><span>${s.emoji||''}</span><div class="en-check"></div></div>`;
-    div.addEventListener('click',()=>{s.done=!s.done;renderReading();checkAllRead();});
+    const isRec = activeRecIdx==='en'+i;
+    const hasAudio = !!s.audioURL;
+    div.innerHTML=`<div class="en-top"><div class="en-item-num">${i+1}.</div><div class="en-item-text">${highlightEn(s.text)}</div></div><div class="en-scene bg${s.bg||1}"><span>${s.emoji||''}</span><div class="en-check"></div></div><div class="en-actions"><button class="rec-btn rec-start${isRec?' recording':''}" data-rec="en-${i}">${isRec?'⏹ Stop':'🎙️ Record'}</button><button class="rec-btn rec-play" data-play="en-${i}" ${hasAudio?'':'disabled'}>▶️ ${hasAudio?'Play':'—'}</button></div>`;
+    div.querySelector('.en-top').addEventListener('click',()=>{s.done=!s.done;renderReading();checkAllRead();});
+    div.querySelector('.en-scene').addEventListener('click',()=>{s.done=!s.done;renderReading();checkAllRead();});
+    div.querySelector('[data-rec]').addEventListener('click',e=>{e.stopPropagation();startRec('en',i);});
+    div.querySelector('[data-play]').addEventListener('click',e=>{e.stopPropagation();playRec('en',i);});
     enEl.appendChild(div);
   });
 }
