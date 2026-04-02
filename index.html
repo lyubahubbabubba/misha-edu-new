@@ -1167,7 +1167,7 @@ body {
 }
 
 /* ===== CONFETTI ===== */
-.confetti-box { position: fixed; inset: 0; pointer-events: none; z-index: 999; overflow: hidden; }
+.confetti-box { position: fixed; inset: 0; pointer-events: none; z-index: 10000; overflow: hidden; }
 
 .conf {
   position: absolute;
@@ -1185,7 +1185,7 @@ body {
 .firework-overlay {
   position: fixed;
   inset: 0;
-  z-index: 997;
+  z-index: 9998;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s;
@@ -1208,7 +1208,7 @@ body {
   padding: 36px 36px 32px;
   text-align: center;
   box-shadow: 0 20px 80px rgba(108,92,231,0.4);
-  z-index: 1000;
+  z-index: 10001;
   opacity: 0;
   transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   max-width: 320px;
@@ -1393,13 +1393,7 @@ body {
   <button class="tab" data-t="settings"><div class="tab-ico">⚙️</div><div class="tab-txt">Настройки</div></button>
 </div>
 
-<div class="firework-overlay" id="fw-overlay"></div>
-<div class="confetti-box" id="cbox"></div>
-<div class="toast" id="toast">
-  <div class="toast-emo" id="t-emo">🎉</div>
-  <div class="toast-t" id="t-t"></div>
-  <div class="toast-s" id="t-s"></div>
-</div>
+<!-- confetti/toast moved to end of body -->
 
 <script>
 const SKILLS = {
@@ -1537,10 +1531,11 @@ function render(){
 function calcStreak(){let s=0,d=new Date();while(true){const x=ds(d),dd=D.days[x];if(!dd)break;const allDone=SK.every(k=>{const t=dd.tasks[k];return t?t.done:true;});if(!allDone)break;s++;d.setDate(d.getDate()-1);}return s;}
 
 function confetti(){
-  const box=document.getElementById('cbox'),cl=['#6C5CE7','#E84393','#00B894','#FD7B33','#0984E3','#FDCB6E','#FF6B6B','#A55EEA','#55EFC4','#FF9FF3'];
-  function wave(){for(let i=0;i<80;i++){const c=document.createElement('div');c.className='conf';c.style.left=Math.random()*100+'%';c.style.top=(-10-Math.random()*20)+'px';c.style.background=cl[Math.floor(Math.random()*cl.length)];c.style.animationDelay=Math.random()*0.8+'s';c.style.animationDuration=(2.5+Math.random()*2)+'s';const sz=8+Math.random()*12;c.style.width=sz+'px';c.style.height=sz*(0.4+Math.random()*0.6)+'px';c.style.borderRadius=Math.random()>0.5?'50%':'3px';box.appendChild(c);}}
-  wave(); setTimeout(wave,600); setTimeout(wave,1200);
-  setTimeout(()=>box.innerHTML='',5000);
+  const box=document.getElementById('cbox');box.innerHTML='';
+  const cl=['#6C5CE7','#E84393','#00B894','#FD7B33','#0984E3','#FDCB6E','#FF6B6B','#A55EEA','#55EFC4','#FF9FF3','#F368E0','#FF3838','#3AE374','#17C0EB'];
+  function wave(){for(let i=0;i<100;i++){const c=document.createElement('div');c.className='conf';c.style.left=Math.random()*100+'%';c.style.top=(-5-Math.random()*15)+'%';c.style.background=cl[Math.floor(Math.random()*cl.length)];c.style.animationDelay=Math.random()*1.2+'s';c.style.animationDuration=(2+Math.random()*2.5)+'s';const sz=10+Math.random()*16;c.style.width=sz+'px';c.style.height=sz*(0.4+Math.random()*0.6)+'px';c.style.borderRadius=Math.random()>0.5?'50%':'3px';box.appendChild(c);}}
+  wave(); setTimeout(wave,500); setTimeout(wave,1000);
+  setTimeout(()=>box.innerHTML='',6000);
 }
 
 function celebrate(){
@@ -1957,5 +1952,13 @@ document.getElementById('read-new').addEventListener('click',()=>{pickSentences(
 render();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
+
+<div class="firework-overlay" id="fw-overlay"></div>
+<div class="confetti-box" id="cbox"></div>
+<div class="toast" id="toast">
+  <div class="toast-emo" id="t-emo">🎉</div>
+  <div class="toast-t" id="t-t"></div>
+  <div class="toast-s" id="t-s"></div>
+</div>
 </body>
 </html>
