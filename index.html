@@ -1667,7 +1667,7 @@ function renderMath(){
     if(p.correct===false) cls+=' wrong';
     if(i===mathActive && !p.correct) cls+=' active';
     div.className=cls;
-    div.innerHTML=`<div class="math-num">${i+1}</div><div class="math-expr">${mathExprHTML(p)}</div><div class="math-check-icon">${p.correct===true?'✅':p.correct===false?'❌':''}</div>`;
+    div.innerHTML=`<div class="math-expr">${mathExprHTML(p)}</div><div class="math-check-icon">${p.correct===true?'✅':p.correct===false?'❌':''}</div>`;
     if(!p.correct){
       div.addEventListener('click',()=>{
         mathActive=i;
