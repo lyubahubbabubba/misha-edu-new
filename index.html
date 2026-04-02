@@ -1232,6 +1232,7 @@ body {
   <div class="header">
     <div class="header-top">
       <h1>Миша EDU 🌟</h1>
+      <span id="sync-ind" style="font-size:16px;opacity:0.7">☁️</span>
       <div class="day-badge" id="day-badge"></div>
     </div>
     <div class="date-row">
@@ -1456,9 +1457,65 @@ const SKILLS = {
 const SK = ['reading','math','writing','independence','selfregulation','emotional'];
 const S0 = '2026-03-30', G0 = '2026-08-08', KEY = 'misha-edu-data';
 
+// ===== SUPABASE SYNC =====
+const SUPA_URL='https://ngdyzhkkuxywsexofjez.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5nZHl6aGtrdXh5d3NleG9mamV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxMjczMzMsImV4cCI6MjA5MDcwMzMzM30.7oQ1UAJs0Qud4wJPT87QR1H9OURpMusYl3QqTT3yf5s';
+const SUPA_HEADERS={'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json'};
+let syncTimer=null;
+
+async function cloudSave(d){
+  const ind=document.getElementById('sync-ind');
+  try{
+    if(ind)ind.textContent='☁️';
+    await fetch(SUPA_URL+'/rest/v1/app_data',{
+      method:'POST',
+      headers:{...SUPA_HEADERS,'Prefer':'resolution=merge-duplicates'},
+      body:JSON.stringify({id:'misha-edu',data:d,updated_at:new Date().toISOString()})
+    });
+    if(ind){ind.textContent='✅';setTimeout(()=>ind.textContent='☁️',1500);}
+  }catch(e){if(ind)ind.textContent='⚠️';}
+}
+
+async function cloudLoad(){
+  try{
+    const r=await fetch(SUPA_URL+'/rest/v1/app_data?id=eq.misha-edu&select=data,updated_at',{headers:SUPA_HEADERS});
+    const rows=await r.json();
+    if(rows.length&&rows[0].data) return rows[0];
+  }catch(e){}
+  return null;
+}
+
 function ld(){try{const r=localStorage.getItem(KEY);if(r){const d=JSON.parse(r);if(!d.phases.writing)d.phases.writing=1;return d;}}catch(e){}return{days:{},phases:{reading:1,math:2,writing:1,independence:1,selfregulation:1,emotional:1}};}
-function sv(d){localStorage.setItem(KEY,JSON.stringify(d));}
+function sv(d){
+  localStorage.setItem(KEY,JSON.stringify(d));
+  // debounced cloud save — 2 sec after last change
+  clearTimeout(syncTimer);
+  syncTimer=setTimeout(()=>cloudSave(d),2000);
+}
 let D=ld();
+
+// On load: merge cloud data if newer
+(async()=>{
+  const cloud=await cloudLoad();
+  if(cloud&&cloud.data){
+    const local=ld();
+    const localDays=Object.keys(local.days).length;
+    const cloudDays=Object.keys(cloud.data.days||{}).length;
+    // Use cloud if it has more data or if local is empty
+    if(cloudDays>localDays || localDays===0){
+      if(cloud.data.phases&&cloud.data.days){
+        D=cloud.data;
+        if(!D.phases.writing)D.phases.writing=1;
+        localStorage.setItem(KEY,JSON.stringify(D));
+        cur=td();
+        render();
+      }
+    } else if(localDays>0){
+      // local has more — push to cloud
+      cloudSave(local);
+    }
+  }
+})();
 
 function ds(d){return d.toISOString().split('T')[0];}
 function pd(s){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
