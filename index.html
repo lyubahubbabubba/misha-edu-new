@@ -1176,9 +1176,9 @@ body {
 }
 
 @keyframes cfall {
-  0% { transform: translateY(-20px) rotate(0deg) scale(1); opacity: 1; }
+  0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
   80% { opacity: 1; }
-  100% { transform: translateY(110vh) rotate(1080deg) scale(0.3); opacity: 0; }
+  100% { transform: translateY(105vh) rotate(720deg) scale(0.3); opacity: 0; }
 }
 
 /* ===== FIREWORKS OVERLAY ===== */
@@ -1590,9 +1590,9 @@ function calcStreak(){let s=0,d=new Date();while(true){const x=ds(d),dd=D.days[x
 function confetti(){
   const box=document.getElementById('cbox');box.innerHTML='';
   const cl=['#6C5CE7','#E84393','#00B894','#FD7B33','#0984E3','#FDCB6E','#FF6B6B','#A55EEA','#55EFC4','#FF9FF3','#F368E0','#FF3838','#3AE374','#17C0EB'];
-  function wave(){for(let i=0;i<100;i++){const c=document.createElement('div');c.className='conf';c.style.left=Math.random()*100+'%';c.style.top=(-5-Math.random()*15)+'%';c.style.background=cl[Math.floor(Math.random()*cl.length)];c.style.animationDelay=Math.random()*1.2+'s';c.style.animationDuration=(2+Math.random()*2.5)+'s';const sz=10+Math.random()*16;c.style.width=sz+'px';c.style.height=sz*(0.4+Math.random()*0.6)+'px';c.style.borderRadius=Math.random()>0.5?'50%':'3px';box.appendChild(c);}}
+  function wave(){for(let i=0;i<100;i++){const c=document.createElement('div');c.className='conf';c.style.left=Math.random()*100+'%';c.style.top='0%';c.style.background=cl[Math.floor(Math.random()*cl.length)];c.style.animationDelay=Math.random()*1.2+'s';c.style.animationDuration=(2+Math.random()*2.5)+'s';const sz=10+Math.random()*16;c.style.width=sz+'px';c.style.height=sz*(0.4+Math.random()*0.6)+'px';c.style.borderRadius=Math.random()>0.5?'50%':'3px';box.appendChild(c);}}
   wave(); setTimeout(wave,500); setTimeout(wave,1000);
-  setTimeout(()=>box.innerHTML='',6000);
+  setTimeout(()=>box.innerHTML='',7000);
 }
 
 function celebrate(){
@@ -1601,13 +1601,17 @@ function celebrate(){
   if(s===7){e='🏆';t='Миша, ты молодец!';sub='Целая неделя! Это победа!';}
   else if(s===14){e='🌟';t='Миша, ты молодец!';sub='Две недели подряд! Это победа!';}
   else if(s===30){e='🚀';t='Миша, ты молодец!';sub='МЕСЯЦ! Это победа!';}
+  const ov=document.getElementById('fw-overlay');
+  const el=document.getElementById('toast');
   document.getElementById('t-emo').textContent=e;
   document.getElementById('t-t').textContent=t;
   document.getElementById('t-s').textContent=sub;
-  const ov=document.getElementById('fw-overlay');
-  const el=document.getElementById('toast');
+  // reset classes first to ensure transition fires
+  ov.classList.remove('show');
+  el.classList.remove('show');
+  void el.offsetWidth; // force reflow
   ov.classList.add('show');
-  requestAnimationFrame(()=>{requestAnimationFrame(()=>{el.classList.add('show');});});
+  setTimeout(()=>{el.classList.add('show');},80);
   el.addEventListener('click',()=>{el.classList.remove('show');ov.classList.remove('show');},{once:true});
   ov.addEventListener('click',()=>{el.classList.remove('show');ov.classList.remove('show');},{once:true});
   setTimeout(()=>{el.classList.remove('show');ov.classList.remove('show');},8000);
