@@ -1572,7 +1572,7 @@ function render(){
     const bonusHtml=(task.bonus||[]).map(b=>`<div class="bonus-item">${b}</div>`).join('');
     const hasLink = sk.link;
     el.innerHTML=`<div class="task-emoji">${sk.emoji}</div><div class="task-content"><div class="task-label">${sk.name}${hasLink?' → ':''}</div><div class="task-desc">${task.text}</div>${hasLink?'':`<button class="more-btn" data-k="${k}">+ Хочу ещё</button>`}${bonusHtml?`<div class="bonus-list">${bonusHtml}</div>`:''}</div><div class="task-toggle"></div>`;
-    el.querySelector('.task-toggle').addEventListener('click',(e)=>{e.stopPropagation();task.done=!task.done;sv(D);render();if(SK.every(x=>dd.tasks[x]?.done)){confetti();celebrate();}});
+    el.querySelector('.task-toggle').addEventListener('click',(e)=>{e.stopPropagation();task.done=!task.done;sv(D);render();if(task.done){confetti();celebrate();}});
     if(hasLink){
       el.querySelector('.task-content').style.cursor='pointer';
       el.querySelector('.task-content').addEventListener('click',(e)=>{e.stopPropagation();document.querySelector(`[data-t="${sk.link}"]`).click();});
